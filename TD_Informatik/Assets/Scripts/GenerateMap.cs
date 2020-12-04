@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapGenerator : MonoBehaviour
+public class GenerateMap : MonoBehaviour
 {
     public GameObject Node;
 
@@ -17,7 +17,7 @@ public class MapGenerator : MonoBehaviour
             {
                 GameObject newNode = Instantiate(Node);
                 newNode.transform.position = new Vector3(x, 0, z);
-
+                 
             }
         }
     }
