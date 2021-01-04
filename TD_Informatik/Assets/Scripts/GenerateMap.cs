@@ -10,17 +10,24 @@ public class GenerateMap : MonoBehaviour
     [SerializeField] private int MapBREITE = 9;
     [SerializeField] private int MapHoehe = 9;
 
-    private List<GameObject> MapNodes = new List<GameObject>();
+    public static List<GameObject> MapNodes = new List<GameObject>();
     private List<GameObject> EnemyNodes = new List<GameObject>();
+    public static List<GameObject> PathNodes = new List<GameObject>();
 
-    private bool reachedX = false; // temporär
-    private bool reachedZ = false; //temporär
-    private GameObject currentTile; // temporär
-    private int currentIndex; // temporär
-    private int nextIndex; // temporär
-    [SerializeField] private int counter = 0; // temporär
-    [SerializeField] private int counter2 = 0; //temporär
+    public static GameObject startTile;
+    public static GameObject endTile;
 
+    private int randomStorage;
+    private List<int> blockedIndex = new List<int>();
+    private bool finishedMapGen = false;
+    private GameObject currentTile;
+    private int currentIndex;
+    private int nextIndex;
+
+    public Material StartMaterial;
+    public Material EndMaterial;
+
+    [SerializeField] private int lengthCounterPath;
 
     private void Start()
     {
@@ -47,6 +54,8 @@ public class GenerateMap : MonoBehaviour
         return edgeTiles;
     }
 
+    
+
     private void MapGenerate()
     {
         for (int z = 0; z < 2 * MapBREITE; z = z + 2)
@@ -63,84 +72,511 @@ public class GenerateMap : MonoBehaviour
         List<GameObject> topTiles = getTopTiles();
         List<GameObject> bottomTiles = getBottomTiles();
 
-        GameObject startTile;
-        GameObject endTile;
+        GameObject startTileGen;
+        GameObject endTileGen;
 
         int randTop = Random.Range(0, MapBREITE);
         int randBottom = Random.Range(0, MapBREITE);
 
-        startTile = topTiles[randTop]; //setzt zufälliges Tile vom oberen Rand als Startpunkt fest
-        endTile = bottomTiles[randBottom]; //setzt zufälliges Tile vom unteren Rand als Startpunkt fest
+        
 
-        currentTile = startTile;
-        counter = 0;
-        moveDown();
-        while (reachedX == false)
+        startTileGen = topTiles[randTop]; //setzt zufälliges Tile vom oberen Rand als Startpunkt fest
+        endTileGen = bottomTiles[randBottom]; //setzt zufälliges Tile vom unteren Rand als Startpunkt fest
+
+        currentTile = startTileGen;
+
+        for (int i = 0; i < MapBREITE*MapHoehe; i++) // fügt, abhängig von der Größe der Map, der Liste blockedIndex pro Maplement ein Element mit dem Wert 0 hinzu
         {
-            counter++;
-            
-            if(currentTile.transform.position.x > endTile.transform.position.x)
+            blockedIndex.Add(0);
+        }
+
+        //Path Generation
+        for (int i = 0; i < MapBREITE; i++) // blockiert alle Elemente der oberen Reihe, die nicht das endTile sind
+        {
+            if (randTop != i)
             {
-                moveLeft();
-            }
-            else if (currentTile.transform.position.x < endTile.transform.position.x)
-            {
-                moveRight();
-            }
-            else
-            {
-                reachedX = true;
+                blockedIndex[(MapHoehe - 1) * MapBREITE + i] = 1;
             }
         }
-        counter2 = 0;
-        while (reachedZ == false)
+        for (int i = 0; i < MapBREITE; i++) // blockiert alle Elemente der unteren Reihe, die nicht das startTile sind
         {
-            counter2++;
-            
-            if(currentTile.transform.position.z > endTile.transform.position.z)
+            if (randBottom!=i)
+            {
+                blockedIndex[i] = 1;
+            }
+        }
+
+        while (finishedMapGen == false)
+        {
+            EnemyNodes.Add(currentTile);
+            currentIndex = MapNodes.IndexOf(currentTile);
+            if (currentIndex > ((MapHoehe - 1) * MapBREITE)-1) //Überprüfung, ob es am oberen Rand ist
             {
                 moveDown();
             }
-            else
+            else if (currentIndex < MapBREITE) //Überprüfung, ob es am unteren Rand ist
             {
-                reachedZ = true;
+                finishedMapGen = true;
+            }
+            else if((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung in alle Richtungen möglich
+            {
+                randomStorage = Random.Range(0, 4);
+                if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveUp();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveRight();
+                    }
+                    if (randomStorage == 3)
+                    {
+                        moveRight();
+                    }
+                }
+                else if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveUp();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveLeft();
+                    }
+                    if (randomStorage == 3)
+                    {
+                        moveLeft();
+                    }
+                }
+                else
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveUp();
+                    }
+                    if(randomStorage == 2)
+                    {
+                        moveLeft();
+                    }
+                    if(randomStorage == 3)
+                    {
+                        moveRight();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach rechts nicht möglich
+            {
+                randomStorage = Random.Range(0, 3);
+                if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveUp();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveDown();
+                    }
+                }
+                else
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveUp();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveLeft();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach links nicht möglich
+            {
+                randomStorage = Random.Range(0, 3);
+                if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveUp();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveDown();
+                    }
+                }
+                else
+                {
+                    if(randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveUp();
+                    }
+                    if(randomStorage == 2)
+                    {
+                        moveRight();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach links und rechts nicht möglich
+            {
+                randomStorage = Random.Range(0, 2);
+                if(randomStorage == 0)
+                {
+                    moveDown();
+                }
+                if(randomStorage == 1)
+                {
+                    moveUp();
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach oben nicht möglich
+            {
+                randomStorage = Random.Range(0, 3);
+                if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveRight();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveRight();
+                    }
+                }
+                else if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveLeft();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveLeft();
+                    }
+                }
+                else
+                {
+                    if(randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveLeft();
+                    }
+                    if(randomStorage == 2)
+                    {
+                        moveRight();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach oben und rechts nicht möglich
+            {
+                randomStorage = Random.Range(0, 2);
+                if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    moveDown();
+                }
+                else
+                {
+                    if(randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveLeft();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach oben und links nicht möglich
+            {
+                randomStorage = Random.Range(0, 2);
+                if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    moveDown();
+                }
+                else
+                {
+                    if(randomStorage == 0)
+                    {
+                        moveDown();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveRight();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach oben, links und rechts nicht möglich
+            {
+                moveDown();
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten nicht möglich
+            {
+                randomStorage = Random.Range(0, 3);
+                if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveUp();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveRight();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveRight();
+                    }
+                }
+                else if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    if (randomStorage == 0)
+                    {
+                        moveUp();
+                    }
+                    if (randomStorage == 1)
+                    {
+                        moveLeft();
+                    }
+                    if (randomStorage == 2)
+                    {
+                        moveLeft();
+                    }
+                }
+                else
+                {
+                    if(randomStorage == 0)
+                    {
+                        moveUp();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveLeft();
+                    }
+                    if(randomStorage == 2)
+                    {
+                        moveRight();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten und rechts nicht möglich
+            {
+                randomStorage = Random.Range(0, 2);
+                if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    moveUp();
+                }
+                else
+                {
+                    if(randomStorage == 0)
+                    {
+                        moveUp();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveLeft();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten und links nicht möglich
+            {
+                randomStorage = Random.Range(0, 2);
+                if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    moveUp();
+                }
+                else
+                {
+                    if(randomStorage == 0)
+                    {
+                        moveUp();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveRight();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten, links und rechts nicht möglich
+            {
+                moveUp();
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten und oben nicht möglich
+            {
+                randomStorage = Random.Range(0, 2);
+                if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    moveRight();
+                }
+                else if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    moveLeft();
+                }
+                else
+                {
+                    if(randomStorage == 0)
+                    {
+                        moveLeft();
+                    }
+                    if(randomStorage == 1)
+                    {
+                        moveRight();
+                    }
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten, oben und rechts nicht möglich
+            {
+                if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    finishedMapGen = true;
+                }
+                else
+                {
+                    moveLeft();
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) // Bewegung nach unten, oben und links nicht möglich
+            {
+                if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    finishedMapGen = true;
+                }
+                else
+                {
+                    moveRight();
+                }
+            }
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung in keine Richtung möglich
+            {
+                finishedMapGen = true;
             }
         }
 
-        EnemyNodes.Add(endTile);
 
         foreach(GameObject obj in EnemyNodes)
         {
-            
+
             Destroy(obj);
             GameObject newPathNode = Instantiate(NodePath);
             newPathNode.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z);
+            PathNodes.Add(newPathNode);
             
         }
+        lengthCounterPath = PathNodes.Count;
+        startTile = PathNodes[0];
+        endTile = PathNodes[lengthCounterPath - 1];
+        startTile.GetComponent<Renderer>().material = StartMaterial;
+        endTile.GetComponent<Renderer>().material = EndMaterial;
+        
 
     }
     
-    private void moveDown() //temporär
+    private void moveDown()
     {
-        EnemyNodes.Add(currentTile);
-        currentIndex = MapNodes.IndexOf(currentTile);
         nextIndex = currentIndex - MapHoehe;
         currentTile = MapNodes[nextIndex];
+
+        blockedIndex[currentIndex] = 1;
+        if(currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
+        {
+            blockedIndex[currentIndex + MapHoehe] = 1;
+        }
+        if(currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+        {
+            blockedIndex[currentIndex - 1] = 1;
+        }
+        if((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+        {
+            blockedIndex[currentIndex + 1] = 1;
+        }
+        Debug.Log("Moved Down");
     }
     
-    private void moveLeft() //temporär
+    private void moveUp()
     {
-        EnemyNodes.Add(currentTile);
-        currentIndex = MapNodes.IndexOf(currentTile);
+        nextIndex = currentIndex + MapHoehe;
+        currentTile = MapNodes[nextIndex];
+
+        blockedIndex[currentIndex] = 1;
+        blockedIndex[currentIndex - MapHoehe] = 1;
+        if(currentIndex % MapBREITE != 0)
+        {
+            blockedIndex[currentIndex - 1] = 1;
+        }
+        if((currentIndex + 1) % MapBREITE != 0)
+        {
+            blockedIndex[currentIndex + 1] = 1;
+        }
+        Debug.Log("Moved Up");
+    }
+    
+    private void moveLeft()
+    {
         nextIndex = currentIndex-1;
         currentTile = MapNodes[nextIndex];
+
+        blockedIndex[currentIndex] = 1;
+        blockedIndex[currentIndex + MapHoehe] = 1;
+        blockedIndex[currentIndex - MapHoehe] = 1;
+        if((currentIndex + 1) % MapBREITE != 0)
+        {
+            blockedIndex[currentIndex + 1] = 1;
+        }
+        Debug.Log("Moved Left");
     }
-    private void moveRight() //temporär
+    private void moveRight()
     {
-        EnemyNodes.Add(currentTile);
-        currentIndex = MapNodes.IndexOf(currentTile);
         nextIndex = currentIndex+1;
         currentTile = MapNodes[nextIndex];
+
+        blockedIndex[currentIndex] = 1;
+        blockedIndex[currentIndex + MapHoehe] = 1;
+        blockedIndex[currentIndex - MapHoehe] = 1;
+        if(currentIndex % MapBREITE != 0)
+        {
+            blockedIndex[currentIndex - 1] = 1;
+        }
+        Debug.Log("Moved Right");
     }
 
 }
