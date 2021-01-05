@@ -23,6 +23,8 @@ public class GenerateMap : MonoBehaviour
     private GameObject currentTile;
     private int currentIndex;
     private int nextIndex;
+    private bool moved = false;
+    [SerializeField] private int endTilePos;
 
     public Material StartMaterial;
     public Material EndMaterial;
@@ -82,6 +84,7 @@ public class GenerateMap : MonoBehaviour
 
         startTileGen = topTiles[randTop]; //setzt zufälliges Tile vom oberen Rand als Startpunkt fest
         endTileGen = bottomTiles[randBottom]; //setzt zufälliges Tile vom unteren Rand als Startpunkt fest
+        endTilePos = randBottom;
 
         currentTile = startTileGen;
 
@@ -105,11 +108,15 @@ public class GenerateMap : MonoBehaviour
                 blockedIndex[i] = 1;
             }
         }
-
+        moved = true;
         while (finishedMapGen == false)
         {
-            EnemyNodes.Add(currentTile);
-            currentIndex = MapNodes.IndexOf(currentTile);
+            if (moved == true) // key part
+            {
+                EnemyNodes.Add(currentTile);
+                currentIndex = MapNodes.IndexOf(currentTile);
+                moved = false;
+            }
             if (currentIndex > ((MapHoehe - 1) * MapBREITE)-1) //Überprüfung, ob es am oberen Rand ist
             {
                 moveDown();
@@ -514,69 +521,622 @@ public class GenerateMap : MonoBehaviour
     private void moveDown()
     {
         nextIndex = currentIndex - MapHoehe;
-        currentTile = MapNodes[nextIndex];
-
+        int currentPos = blockedIndex[currentIndex];
+        int topPos = 0;
+        int leftPos = 0;
+        int rightPos = 0;
         blockedIndex[currentIndex] = 1;
         if(currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
         {
+            topPos = blockedIndex[currentIndex + MapHoehe];
             blockedIndex[currentIndex + MapHoehe] = 1;
         }
         if(currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
         {
+            leftPos = blockedIndex[currentIndex - 1];
             blockedIndex[currentIndex - 1] = 1;
         }
         if((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
         {
+            rightPos = blockedIndex[currentIndex + 1];
             blockedIndex[currentIndex + 1] = 1;
         }
-        Debug.Log("Moved Down");
+        bool schleifeAktiv = true;
+        int schleifeCurrentIndex = nextIndex;
+        int failCounter = 0;
+        int rightLeftCounter = 0;
+        while(schleifeAktiv == true)
+        {
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1 ; i=i-MapBREITE)
+            {
+                if(blockedIndex[i] == 0)
+                {
+                    schleifeCurrentIndex = i;
+                    failCounter = 0;
+                    rightLeftCounter = 0;
+                }
+                if(blockedIndex[i] == 1)
+                {
+                    failCounter++;
+                    i = -1;
+                }
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE )
+                {
+                    schleifeAktiv = false;
+                    i = -1;
+                    moved = true;
+                }
+            }
+            if (schleifeCurrentIndex % MapBREITE != 0)
+            {
+                for (int i = schleifeCurrentIndex - 1; i > -1; i = i - 1)
+                {
+                    if (blockedIndex[i] == 0)
+                    {
+                        schleifeCurrentIndex = i;
+                        failCounter = 0;
+                        rightLeftCounter++;
+                    }
+                    if (blockedIndex[i] == 1)
+                    {
+                        failCounter++;
+                        i = -1;
+                    }
+                    if(schleifeCurrentIndex % MapBREITE == 0)
+                    {
+                        i = -1;
+                    }
+                    if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                    {
+                        schleifeAktiv = false;
+                        i = -1;
+                        currentTile = MapNodes[nextIndex];
+                        moved = true;
+                    }
+                }
+            }
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            {
+                if (blockedIndex[i] == 0)
+                {
+                    schleifeCurrentIndex = i;
+                    failCounter = 0;
+                    rightLeftCounter = 0;
+                }
+                if (blockedIndex[i] == 1)
+                {
+                    failCounter++;
+                    i = -1;
+                }
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                {
+                    schleifeAktiv = false;
+                    i = -1;
+                    moved = true;
+                }
+            }
+            if((schleifeCurrentIndex + 1)%MapBREITE != 0)
+            {
+                for (int i = schleifeCurrentIndex + 1; i < MapBREITE * MapHoehe - 1; i++)
+                {
+                    if(blockedIndex[i] == 0)
+                    {
+                        schleifeCurrentIndex = i;
+                        failCounter = 0;
+                        rightLeftCounter++;
+                    }
+                    if(blockedIndex[i] == 1)
+                    {
+                        failCounter++;
+                        i = MapBREITE * MapHoehe;
+                    }
+                    if((schleifeCurrentIndex + 1)%MapBREITE == 0)
+                    {
+                        i = MapBREITE * MapHoehe;
+                    }
+                    if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                    {
+                        schleifeAktiv = false;
+                        i = MapBREITE * MapHoehe;
+                        moved = true;
+                    }
+                }
+            }
+            if (failCounter > 10 && moved == false)
+            {
+                schleifeAktiv = false;
+                blockedIndex[currentIndex] = currentPos;
+                if (currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
+                {
+                    blockedIndex[currentIndex + MapHoehe] = topPos;
+                }
+                if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    blockedIndex[currentIndex - 1] = leftPos;
+                }
+                if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    blockedIndex[currentIndex + 1] = rightPos;
+                }
+                Debug.Log("ACTION PREVENTED: MOVING DOWN");
+            }
+            if (rightLeftCounter > 2 * MapBREITE)
+            {
+                schleifeAktiv = false;
+                blockedIndex[currentIndex] = currentPos;
+                if (currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
+                {
+                    blockedIndex[currentIndex + MapHoehe] = topPos;
+                }
+                if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    blockedIndex[currentIndex - 1] = leftPos;
+                }
+                if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    blockedIndex[currentIndex + 1] = rightPos;
+                }
+                Debug.Log("ACTION PREVENTED: MOVING DOWN, RIGHT-LEFT EXCEPTION");
+            }
+        }
+        if (moved == true)
+        {
+            currentTile = MapNodes[nextIndex];
+            Debug.Log("Moved Down");
+        }
     }
     
     private void moveUp()
     {
         nextIndex = currentIndex + MapHoehe;
-        currentTile = MapNodes[nextIndex];
-
+        int currentPos = blockedIndex[currentIndex];
+        int botPos = blockedIndex[currentIndex - MapHoehe];
+        int leftPos = 0;
+        int rightPos = 0;
         blockedIndex[currentIndex] = 1;
         blockedIndex[currentIndex - MapHoehe] = 1;
         if(currentIndex % MapBREITE != 0)
         {
+            leftPos = blockedIndex[currentIndex - 1];
             blockedIndex[currentIndex - 1] = 1;
         }
         if((currentIndex + 1) % MapBREITE != 0)
         {
+            rightPos = blockedIndex[currentIndex + 1];
             blockedIndex[currentIndex + 1] = 1;
         }
-        Debug.Log("Moved Up");
+        bool schleifeAktiv = true;
+        int schleifeCurrentIndex = nextIndex;
+        int failCounter = 0;
+        int rightLeftCounter = 0;
+        while (schleifeAktiv == true)
+        {
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            {
+                if (blockedIndex[i] == 0)
+                {
+                    schleifeCurrentIndex = i;
+                    failCounter = 0;
+                    rightLeftCounter = 0;
+                }
+                if (blockedIndex[i] == 1)
+                {
+                    failCounter++;
+                    i = -1;
+                }
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                {
+                    schleifeAktiv = false;
+                    i = -1;
+                    moved = true;
+                }
+            }
+            if (schleifeCurrentIndex % MapBREITE != 0)
+            {
+                for (int i = schleifeCurrentIndex - 1; i > -1; i = i - 1)
+                {
+                    if (blockedIndex[i] == 0)
+                    {
+                        schleifeCurrentIndex = i;
+                        failCounter = 0;
+                        rightLeftCounter++;
+                    }
+                    if (blockedIndex[i] == 1)
+                    {
+                        failCounter++;
+                        i = -1;
+                    }
+                    if (schleifeCurrentIndex % MapBREITE == 0)
+                    {
+                        i = -1;
+                    }
+                    if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                    {
+                        schleifeAktiv = false;
+                        i = -1;
+                        currentTile = MapNodes[nextIndex];
+                        moved = true;
+                    }
+                }
+            }
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            {
+                if (blockedIndex[i] == 0)
+                {
+                    schleifeCurrentIndex = i;
+                    failCounter = 0;
+                    rightLeftCounter = 0;
+                }
+                if (blockedIndex[i] == 1)
+                {
+                    failCounter++;
+                    i = -1;
+                }
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                {
+                    schleifeAktiv = false;
+                    i = -1;
+                    moved = true;
+                }
+            }
+            if ((schleifeCurrentIndex + 1) % MapBREITE != 0)
+            {
+                for (int i = schleifeCurrentIndex + 1; i < MapBREITE * MapHoehe - 1; i++)
+                {
+                    if (blockedIndex[i] == 0)
+                    {
+                        schleifeCurrentIndex = i;
+                        failCounter = 0;
+                        rightLeftCounter++;
+                    }
+                    if (blockedIndex[i] == 1)
+                    {
+                        failCounter++;
+                        i = MapBREITE * MapHoehe;
+                    }
+                    if ((schleifeCurrentIndex + 1) % MapBREITE == 0)
+                    {
+                        i = MapBREITE * MapHoehe;
+                    }
+                    if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                    {
+                        schleifeAktiv = false;
+                        i = MapBREITE * MapHoehe;
+                        moved = true;
+                    }
+                }
+            }
+            if (failCounter > 10 && moved == false)
+            {
+                schleifeAktiv = false;
+                blockedIndex[currentIndex] = currentPos;
+                blockedIndex[currentIndex - MapHoehe] = botPos;
+                if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    blockedIndex[currentIndex - 1] = leftPos;
+                }
+                if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    blockedIndex[currentIndex + 1] = rightPos;
+                }
+                Debug.Log("ACTION PREVENTED: MOVING UP");
+            }
+            if (rightLeftCounter > 2 * MapBREITE)
+            {
+                schleifeAktiv = false;
+                blockedIndex[currentIndex] = currentPos;
+                blockedIndex[currentIndex - MapHoehe] = botPos;
+                if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    blockedIndex[currentIndex - 1] = leftPos;
+                }
+                if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    blockedIndex[currentIndex + 1] = rightPos;
+                }
+                Debug.Log("ACTION PREVENTED: MOVING UP, RIGHT-LEFT EXCEPTION");
+            }
+        }
+        if (moved == true)
+        {
+            currentTile = MapNodes[nextIndex];
+            Debug.Log("Moved Up");
+        }
     }
     
     private void moveLeft()
     {
         nextIndex = currentIndex-1;
-        currentTile = MapNodes[nextIndex];
-
+        int currentPos = blockedIndex[currentIndex];
+        int topPos = blockedIndex[currentIndex + MapHoehe];
+        int botPos = blockedIndex[currentIndex - MapHoehe];
+        int rightPos = 0;
         blockedIndex[currentIndex] = 1;
         blockedIndex[currentIndex + MapHoehe] = 1;
         blockedIndex[currentIndex - MapHoehe] = 1;
         if((currentIndex + 1) % MapBREITE != 0)
         {
+            rightPos = blockedIndex[currentIndex + 1];
             blockedIndex[currentIndex + 1] = 1;
         }
-        Debug.Log("Moved Left");
+        bool schleifeAktiv = true;
+        int schleifeCurrentIndex = nextIndex;
+        int failCounter = 0;
+        int rightLeftCounter = 0;
+        while (schleifeAktiv == true)
+        {
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            {
+                if (blockedIndex[i] == 0)
+                {
+                    schleifeCurrentIndex = i;
+                    failCounter = 0;
+                    rightLeftCounter = 0;
+                }
+                if (blockedIndex[i] == 1)
+                {
+                    failCounter++;
+                    i = -1;
+                }
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                {
+                    schleifeAktiv = false;
+                    i = -1;
+                    moved = true;
+                }
+            }
+            if (schleifeCurrentIndex % MapBREITE != 0)
+            {
+                for (int i = schleifeCurrentIndex - 1; i > -1; i = i - 1)
+                {
+                    if (blockedIndex[i] == 0)
+                    {
+                        schleifeCurrentIndex = i;
+                        failCounter = 0;
+                        rightLeftCounter++;
+                    }
+                    if (blockedIndex[i] == 1)
+                    {
+                        failCounter++;
+                        i = -1;
+                    }
+                    if (schleifeCurrentIndex % MapBREITE == 0)
+                    {
+                        i = -1;
+                    }
+                    if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                    {
+                        schleifeAktiv = false;
+                        i = -1;
+                        currentTile = MapNodes[nextIndex];
+                        moved = true;
+                    }
+                }
+            }
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            {
+                if (blockedIndex[i] == 0)
+                {
+                    schleifeCurrentIndex = i;
+                    failCounter = 0;
+                    rightLeftCounter = 0;
+                }
+                if (blockedIndex[i] == 1)
+                {
+                    failCounter++;
+                    i = -1;
+                }
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                {
+                    schleifeAktiv = false;
+                    i = -1;
+                    moved = true;
+                }
+            }
+            if ((schleifeCurrentIndex + 1) % MapBREITE != 0)
+            {
+                for (int i = schleifeCurrentIndex + 1; i < MapBREITE * MapHoehe - 1; i++)
+                {
+                    if (blockedIndex[i] == 0)
+                    {
+                        schleifeCurrentIndex = i;
+                        failCounter = 0;
+                        rightLeftCounter++;
+                    }
+                    if (blockedIndex[i] == 1)
+                    {
+                        failCounter++;
+                        i = MapBREITE * MapHoehe;
+                    }
+                    if ((schleifeCurrentIndex + 1) % MapBREITE == 0)
+                    {
+                        i = MapBREITE * MapHoehe;
+                    }
+                    if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                    {
+                        schleifeAktiv = false;
+                        i = MapBREITE * MapHoehe;
+                        moved = true;
+                    }
+                }
+            }
+            if (failCounter > 10 && moved == false)
+            {
+                schleifeAktiv = false;
+                blockedIndex[currentIndex] = currentPos;
+                blockedIndex[currentIndex + MapHoehe] = topPos;
+                blockedIndex[currentIndex - MapHoehe] = botPos;
+                if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    blockedIndex[currentIndex + 1] = rightPos;
+                }
+                Debug.Log("ACTION PREVENTED: MOVING LEFT");
+            }
+            if (rightLeftCounter > 2 * MapBREITE)
+            {
+                schleifeAktiv = false;
+                blockedIndex[currentIndex] = currentPos;
+                blockedIndex[currentIndex + MapHoehe] = topPos;
+                blockedIndex[currentIndex - MapHoehe] = botPos;
+                if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+                {
+                    blockedIndex[currentIndex + 1] = rightPos;
+                }
+                Debug.Log("ACTION PREVENTED: MOVING LEFT, RIGHT-LEFT EXCEPTION");
+            }
+        }
+        if (moved == true)
+        {
+            currentTile = MapNodes[nextIndex];
+            Debug.Log("Moved Left");
+        }
     }
     private void moveRight()
     {
         nextIndex = currentIndex+1;
-        currentTile = MapNodes[nextIndex];
-
+        int currentPos = blockedIndex[currentIndex];
+        int topPos = blockedIndex[currentIndex + MapHoehe];
+        int botPos = blockedIndex[currentIndex - MapHoehe];
+        int leftPos = 0;
         blockedIndex[currentIndex] = 1;
         blockedIndex[currentIndex + MapHoehe] = 1;
         blockedIndex[currentIndex - MapHoehe] = 1;
         if(currentIndex % MapBREITE != 0)
         {
+            leftPos = blockedIndex[currentIndex + 1];
             blockedIndex[currentIndex - 1] = 1;
         }
-        Debug.Log("Moved Right");
+        bool schleifeAktiv = true;
+        int schleifeCurrentIndex = nextIndex;
+        int failCounter = 0;
+        int rightLeftCounter = 0;
+        while (schleifeAktiv == true)
+        {
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            {
+                if (blockedIndex[i] == 0)
+                {
+                    schleifeCurrentIndex = i;
+                    failCounter = 0;
+                    rightLeftCounter = 0;
+                }
+                if (blockedIndex[i] == 1)
+                {
+                    failCounter++;
+                    i = -1;
+                }
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                {
+                    schleifeAktiv = false;
+                    i = -1;
+                    moved = true;
+                }
+            }
+            if (schleifeCurrentIndex % MapBREITE != 0)
+            {
+                for (int i = schleifeCurrentIndex - 1; i > -1; i = i - 1)
+                {
+                    if (blockedIndex[i] == 0)
+                    {
+                        schleifeCurrentIndex = i;
+                        failCounter = 0;
+                        rightLeftCounter++;
+                    }
+                    if (blockedIndex[i] == 1)
+                    {
+                        failCounter++;
+                        i = -1;
+                    }
+                    if (schleifeCurrentIndex % MapBREITE == 0)
+                    {
+                        i = -1;
+                    }
+                    if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                    {
+                        schleifeAktiv = false;
+                        i = -1;
+                        currentTile = MapNodes[nextIndex];
+                        moved = true;
+                    }
+                }
+            }
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            {
+                if (blockedIndex[i] == 0)
+                {
+                    schleifeCurrentIndex = i;
+                    failCounter = 0;
+                    rightLeftCounter = 0;
+                }
+                if (blockedIndex[i] == 1)
+                {
+                    failCounter++;
+                    i = -1;
+                }
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                {
+                    schleifeAktiv = false;
+                    i = -1;
+                    moved = true;
+                }
+            }
+            if ((schleifeCurrentIndex + 1) % MapBREITE != 0)
+            {
+                for (int i = schleifeCurrentIndex + 1; i < MapBREITE * MapHoehe - 1; i++)
+                {
+                    if (blockedIndex[i] == 0)
+                    {
+                        schleifeCurrentIndex = i;
+                        failCounter = 0;
+                        rightLeftCounter++;
+                    }
+                    if (blockedIndex[i] == 1)
+                    {
+                        failCounter++;
+                        i = MapBREITE * MapHoehe;
+                    }
+                    if ((schleifeCurrentIndex + 1) % MapBREITE == 0)
+                    {
+                        i = MapBREITE * MapHoehe;
+                    }
+                    if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
+                    {
+                        schleifeAktiv = false;
+                        i = MapBREITE * MapHoehe;
+                        moved = true;
+                    }
+                }
+            }
+            if (failCounter > 10 && moved == false)
+            {
+                schleifeAktiv = false;
+                blockedIndex[currentIndex] = currentPos;
+                blockedIndex[currentIndex + MapHoehe] = topPos;
+                blockedIndex[currentIndex - MapHoehe] = botPos;
+                if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    blockedIndex[currentIndex - 1] = leftPos;
+                }
+                Debug.Log("ACTION PREVENTED: MOVING RIGHT");
+            }
+            if (rightLeftCounter > 2 * MapBREITE)
+            {
+                schleifeAktiv = false;
+                blockedIndex[currentIndex] = currentPos;
+                blockedIndex[currentIndex + MapHoehe] = topPos;
+                blockedIndex[currentIndex - MapHoehe] = botPos;
+                if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+                {
+                    blockedIndex[currentIndex - 1] = leftPos;
+                }
+                Debug.Log("ACTION PREVENTED: MOVING RIGHT, RIGHT-LEFT EXCEPTION");
+            }
+        }
+        if (moved == true)
+        {
+            currentTile = MapNodes[nextIndex];
+            Debug.Log("Moved Right");
+        }
     }
 
 }
