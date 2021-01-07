@@ -21,6 +21,7 @@ public class EnemyBehavior2 : MonoBehaviour
 
     public Vector3 TargetZPos;
     public Vector3 TargetXPos;
+    public Vector3 EndNodePos;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class EnemyBehavior2 : MonoBehaviour
     void Update()
     {
         CheckTargetNode();
+        CheckEnemy();
         MoveEnemy();
     }
 
@@ -41,22 +43,10 @@ public class EnemyBehavior2 : MonoBehaviour
 
     private void MoveEnemy()
     {
-        
-        if( Distancez >= 0.01)  //in z bewegen
-        {
-            TargetZPos = new Vector3(transform.position.x, transform.position.y + 0.3f, TargetNode.transform.position.z);
 
-            transform.position = Vector3.MoveTowards(transform.position, TargetZPos , Speed * Time.deltaTime);
-        }
-        transform.position = Vector3.MoveTowards(transform.position, TargetNode.transform.position, Speed * Time.deltaTime);
-
-
-        if (Distancex >= 0.01)  //in x bewegen
-        {
-            TargetXPos = new Vector3(TargetNode.transform.position.x, transform.position.y + 0.3f, transform.position.z );
-
-            transform.position = Vector3.MoveTowards(transform.position, TargetXPos, Speed * Time.deltaTime);
-        }
+      TargetXPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z ); // nur in x und z Richtung zum TargetNode bewegen
+      transform.position = Vector3.MoveTowards(transform.position, TargetXPos, Speed * Time.deltaTime   );
+     
 
     }
 
@@ -77,13 +67,29 @@ public class EnemyBehavior2 : MonoBehaviour
             }
 
         }
-        if (transform.position == GenerateMap.endTile.transform.position)
+
+        if (TargetNode.transform.position == GenerateMap.endTile.transform.position)
+        {
+            EndNodePos = new Vector3(TargetNode.transform.position.x, 1, TargetNode.transform.position.z);
+        }
+        if (transform.position == EndNodePos)  // wenn am Ziel -> Tod des Enemy und schaden bekommen
         {
             die();
+            // Lebenspunkte schaden abziehen
         }
 
     }
 
+    private void CheckEnemy()
+    {
+        if (Health <= 0f)
+        {
+            die();
+            // füge Killreward zu Geld hinzu
+
+        }
+
+    }
     private void die()
     {
         Destroy(transform.gameObject);
