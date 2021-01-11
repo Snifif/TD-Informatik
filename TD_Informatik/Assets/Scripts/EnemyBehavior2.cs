@@ -6,29 +6,26 @@ using UnityEngine;
 public class EnemyBehavior2 : MonoBehaviour
 {
     private GameObject TargetNode;
-    [SerializeField]
-    private float Health;
-    [SerializeField]
-    private float Damage;
-    [SerializeField]
-    private float Speed;
-    [SerializeField]
-    private float KillReward;
+    [SerializeField] private float Health;
+    [SerializeField] private int Damage;
+    [SerializeField] private float Speed;
+    [SerializeField] private int KillReward;
 
 
     private float Distancex;
     private float Distancez;
 
-    public Vector3 TargetZPos;
-    public Vector3 TargetXPos;
+    public Vector3 TargetPos;
     public Vector3 EndNodePos;
+
+    public GameObject Enemy;
 
     void Start()
     {
         InitializeEnemy();
-    } 
 
-    // Update is called once per frame
+    }
+
     void Update()
     {
         CheckTargetNode();
@@ -39,13 +36,15 @@ public class EnemyBehavior2 : MonoBehaviour
     private void InitializeEnemy()
     {
         TargetNode = GenerateMap.PathNodes[0];
-    }
+        GameObject newEnemy = Instantiate(Enemy);
+        gameObject.GetComponent<HQ>().EnemyList.Add(Enemy);
 
+    }
     private void MoveEnemy()
     {
 
-      TargetXPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z ); // nur in x und z Richtung zum TargetNode bewegen
-      transform.position = Vector3.MoveTowards(transform.position, TargetXPos, Speed * Time.deltaTime   );
+      TargetPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z ); // nur in x und z Richtung zum TargetNode bewegen
+      transform.position = Vector3.MoveTowards(transform.position, TargetPos, Speed * Time.deltaTime   ); // deltaTime, damit bei schnell hintereinander void update Aufrufen der Gegner nicht super schnell ist
      
 
     }
@@ -75,6 +74,7 @@ public class EnemyBehavior2 : MonoBehaviour
         if (transform.position == EndNodePos)  // wenn am Ziel -> Tod des Enemy und schaden bekommen
         {
             die();
+            gameObject.GetComponent<HQ>().HQHealth = gameObject.GetComponent<HQ>().HQHealth - Damage;
             // Lebenspunkte schaden abziehen
         }
 
@@ -85,7 +85,7 @@ public class EnemyBehavior2 : MonoBehaviour
         if (Health <= 0f)
         {
             die();
-            // füge Killreward zu Geld hinzu
+            gameObject.GetComponent<HQ>().Money = gameObject.GetComponent<HQ>().Money + KillReward;       // füge Killreward zu Geld hinzu
 
         }
 
@@ -93,5 +93,7 @@ public class EnemyBehavior2 : MonoBehaviour
     private void die()
     {
         Destroy(transform.gameObject);
+        gameObject.GetComponent<HQ>().EnemyList.Remove();
+
     }
 }
