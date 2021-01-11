@@ -10,6 +10,7 @@ public class HQ : MonoBehaviour
 
     public List<GameObject> EnemyList = new List<GameObject>();
 
+
     private void Update()
     {
         if (HQHealth <= 0)

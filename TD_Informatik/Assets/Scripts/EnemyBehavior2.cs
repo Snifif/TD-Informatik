@@ -59,9 +59,8 @@ public class EnemyBehavior2 : MonoBehaviour
             
             if (Distancex <= 0.01f && Distancez <= 0.01f)
             {
-                int NextTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode) + 1;
+                int NextTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode) + 1;         // Nexte TargetNode
                 TargetNode = GenerateMap.PathNodes[NextTargetNode];
-
 
             }
 
@@ -71,11 +70,11 @@ public class EnemyBehavior2 : MonoBehaviour
         {
             EndNodePos = new Vector3(TargetNode.transform.position.x, 1, TargetNode.transform.position.z);
         }
-        if (transform.position == EndNodePos)  // wenn am Ziel -> Tod des Enemy und schaden bekommen
+        if (transform.position == EndNodePos)           // wenn am Ziel -> Tod des Enemy und schaden bekommen
         {
+            
+            gameObject.GetComponent<HQ>().HQHealth = gameObject.GetComponent<HQ>().HQHealth - Damage;           // Lebenspunkte schaden abziehen
             die();
-            gameObject.GetComponent<HQ>().HQHealth = gameObject.GetComponent<HQ>().HQHealth - Damage;
-            // Lebenspunkte schaden abziehen
         }
 
     }
@@ -84,16 +83,17 @@ public class EnemyBehavior2 : MonoBehaviour
     {
         if (Health <= 0f)
         {
-            die();
+           
             gameObject.GetComponent<HQ>().Money = gameObject.GetComponent<HQ>().Money + KillReward;       // füge Killreward zu Geld hinzu
-
+            die();
         }
 
     }
     private void die()
     {
+        gameObject.GetComponent<HQ>().EnemyList.Remove(Enemy);
         Destroy(transform.gameObject);
-        gameObject.GetComponent<HQ>().EnemyList.Remove();
+        
 
     }
 }
