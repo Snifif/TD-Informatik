@@ -26,7 +26,7 @@ public class EnemyBehavior2 : MonoBehaviour
     void Start()
     {
         InitializeEnemy();
-    } 
+    }
 
     // Update is called once per frame
     void Update()
@@ -44,9 +44,15 @@ public class EnemyBehavior2 : MonoBehaviour
     private void MoveEnemy()
     {
 
+<<<<<<< Updated upstream
       TargetXPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z ); // nur in x und z Richtung zum TargetNode bewegen
       transform.position = Vector3.MoveTowards(transform.position, TargetXPos, Speed * Time.deltaTime   );
      
+=======
+        targetPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z); // nur in x und z Richtung zum TargetNode bewegen
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+
+>>>>>>> Stashed changes
 
     }
 
@@ -55,10 +61,15 @@ public class EnemyBehavior2 : MonoBehaviour
         Distancex = Mathf.Abs(transform.position.x - TargetNode.transform.position.x);
         Distancez = Mathf.Abs(transform.position.z - TargetNode.transform.position.z);
 
-        if ( TargetNode != null && TargetNode != GenerateMap.endTile )
+        if (TargetNode != null && TargetNode != GenerateMap.endTile)
         {
+<<<<<<< Updated upstream
             
             if (Distancex <= 0.01f && Distancez <= 0.01f)
+=======
+
+            if (distanceX <= 0.01f && distanceZ <= 0.01f)
+>>>>>>> Stashed changes
             {
                 int NextTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode) + 1;
                 TargetNode = GenerateMap.PathNodes[NextTargetNode];
@@ -90,6 +101,20 @@ public class EnemyBehavior2 : MonoBehaviour
         }
 
     }
+<<<<<<< Updated upstream
+=======
+
+    public void takeDamage(float damageAmount)
+    {
+        health = health - damageAmount;
+
+        if (health <= 0)
+        {
+            die();
+        }
+    }
+
+>>>>>>> Stashed changes
     private void die()
     {
         Destroy(transform.gameObject);

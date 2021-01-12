@@ -56,7 +56,7 @@ public class GenerateMap : MonoBehaviour
         return edgeTiles;
     }
 
-    
+
 
     private void MapGenerate()
     {
@@ -80,7 +80,7 @@ public class GenerateMap : MonoBehaviour
         int randTop = Random.Range(0, MapBREITE);
         int randBottom = Random.Range(0, MapBREITE);
 
-        
+
 
         startTileGen = topTiles[randTop]; //setzt zufälliges Tile vom oberen Rand als Startpunkt fest
         endTileGen = bottomTiles[randBottom]; //setzt zufälliges Tile vom unteren Rand als Startpunkt fest
@@ -88,7 +88,7 @@ public class GenerateMap : MonoBehaviour
 
         currentTile = startTileGen;
 
-        for (int i = 0; i < MapBREITE*MapHoehe; i++) // fügt, abhängig von der Größe der Map, der Liste blockedIndex pro Maplement ein Element mit dem Wert 0 hinzu
+        for (int i = 0; i < MapBREITE * MapHoehe; i++) // fügt, abhängig von der Größe der Map, der Liste blockedIndex pro Maplement ein Element mit dem Wert 0 hinzu
         {
             blockedIndex.Add(0);
         }
@@ -103,7 +103,7 @@ public class GenerateMap : MonoBehaviour
         }
         for (int i = 0; i < MapBREITE; i++) // blockiert alle Elemente der unteren Reihe, die nicht das startTile sind
         {
-            if (randBottom!=i)
+            if (randBottom != i)
             {
                 blockedIndex[i] = 1;
             }
@@ -117,7 +117,7 @@ public class GenerateMap : MonoBehaviour
                 currentIndex = MapNodes.IndexOf(currentTile);
                 moved = false;
             }
-            if (currentIndex > ((MapHoehe - 1) * MapBREITE)-1) //Überprüfung, ob es am oberen Rand ist
+            if (currentIndex > ((MapHoehe - 1) * MapBREITE) - 1) //Überprüfung, ob es am oberen Rand ist
             {
                 moveDown();
             }
@@ -125,7 +125,7 @@ public class GenerateMap : MonoBehaviour
             {
                 finishedMapGen = true;
             }
-            else if((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung in alle Richtungen möglich
+            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung in alle Richtungen möglich
             {
                 randomStorage = Random.Range(0, 4);
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
@@ -172,15 +172,15 @@ public class GenerateMap : MonoBehaviour
                     {
                         moveDown();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveUp();
                     }
-                    if(randomStorage == 2)
+                    if (randomStorage == 2)
                     {
                         moveLeft();
                     }
-                    if(randomStorage == 3)
+                    if (randomStorage == 3)
                     {
                         moveRight();
                     }
@@ -240,15 +240,15 @@ public class GenerateMap : MonoBehaviour
                 }
                 else
                 {
-                    if(randomStorage == 0)
+                    if (randomStorage == 0)
                     {
                         moveDown();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveUp();
                     }
-                    if(randomStorage == 2)
+                    if (randomStorage == 2)
                     {
                         moveRight();
                     }
@@ -257,11 +257,11 @@ public class GenerateMap : MonoBehaviour
             else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach links und rechts nicht möglich
             {
                 randomStorage = Random.Range(0, 2);
-                if(randomStorage == 0)
+                if (randomStorage == 0)
                 {
                     moveDown();
                 }
-                if(randomStorage == 1)
+                if (randomStorage == 1)
                 {
                     moveUp();
                 }
@@ -301,15 +301,15 @@ public class GenerateMap : MonoBehaviour
                 }
                 else
                 {
-                    if(randomStorage == 0)
+                    if (randomStorage == 0)
                     {
                         moveDown();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveLeft();
                     }
-                    if(randomStorage == 2)
+                    if (randomStorage == 2)
                     {
                         moveRight();
                     }
@@ -324,11 +324,11 @@ public class GenerateMap : MonoBehaviour
                 }
                 else
                 {
-                    if(randomStorage == 0)
+                    if (randomStorage == 0)
                     {
                         moveDown();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveLeft();
                     }
@@ -343,11 +343,11 @@ public class GenerateMap : MonoBehaviour
                 }
                 else
                 {
-                    if(randomStorage == 0)
+                    if (randomStorage == 0)
                     {
                         moveDown();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveRight();
                     }
@@ -392,15 +392,15 @@ public class GenerateMap : MonoBehaviour
                 }
                 else
                 {
-                    if(randomStorage == 0)
+                    if (randomStorage == 0)
                     {
                         moveUp();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveLeft();
                     }
-                    if(randomStorage == 2)
+                    if (randomStorage == 2)
                     {
                         moveRight();
                     }
@@ -415,11 +415,11 @@ public class GenerateMap : MonoBehaviour
                 }
                 else
                 {
-                    if(randomStorage == 0)
+                    if (randomStorage == 0)
                     {
                         moveUp();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveLeft();
                     }
@@ -434,11 +434,11 @@ public class GenerateMap : MonoBehaviour
                 }
                 else
                 {
-                    if(randomStorage == 0)
+                    if (randomStorage == 0)
                     {
                         moveUp();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveRight();
                     }
@@ -461,11 +461,11 @@ public class GenerateMap : MonoBehaviour
                 }
                 else
                 {
-                    if(randomStorage == 0)
+                    if (randomStorage == 0)
                     {
                         moveLeft();
                     }
-                    if(randomStorage == 1)
+                    if (randomStorage == 1)
                     {
                         moveRight();
                     }
@@ -500,24 +500,24 @@ public class GenerateMap : MonoBehaviour
         }
 
 
-        foreach(GameObject obj in EnemyNodes)
+        foreach (GameObject obj in EnemyNodes)
         {
 
             Destroy(obj);
             GameObject newPathNode = Instantiate(NodePath);
             newPathNode.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, obj.transform.position.z);
             PathNodes.Add(newPathNode);
-            
+
         }
         lengthCounterPath = PathNodes.Count;
         startTile = PathNodes[0];
         endTile = PathNodes[lengthCounterPath - 1];
         startTile.GetComponent<Renderer>().material = StartMaterial;
         endTile.GetComponent<Renderer>().material = EndMaterial;
-        
+
 
     }
-    
+
     private void moveDown()
     {
         nextIndex = currentIndex - MapHoehe;
@@ -526,17 +526,17 @@ public class GenerateMap : MonoBehaviour
         int leftPos = 0;
         int rightPos = 0;
         blockedIndex[currentIndex] = 1;
-        if(currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
+        if (currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
         {
             topPos = blockedIndex[currentIndex + MapHoehe];
             blockedIndex[currentIndex + MapHoehe] = 1;
         }
-        if(currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
+        if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
         {
             leftPos = blockedIndex[currentIndex - 1];
             blockedIndex[currentIndex - 1] = 1;
         }
-        if((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
+        if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
         {
             rightPos = blockedIndex[currentIndex + 1];
             blockedIndex[currentIndex + 1] = 1;
@@ -545,22 +545,22 @@ public class GenerateMap : MonoBehaviour
         int schleifeCurrentIndex = nextIndex;
         int failCounter = 0;
         int rightLeftCounter = 0;
-        while(schleifeAktiv == true)
+        while (schleifeAktiv == true)
         {
-            for (int i = schleifeCurrentIndex - MapBREITE; i > -1 ; i=i-MapBREITE)
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
             {
-                if(blockedIndex[i] == 0)
+                if (blockedIndex[i] == 0)
                 {
                     schleifeCurrentIndex = i;
                     failCounter = 0;
                     rightLeftCounter = 0;
                 }
-                if(blockedIndex[i] == 1)
+                if (blockedIndex[i] == 1)
                 {
                     failCounter++;
                     i = -1;
                 }
-                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE )
+                if (schleifeCurrentIndex == endTilePos || schleifeCurrentIndex == endTilePos + MapBREITE)
                 {
                     schleifeAktiv = false;
                     i = -1;
@@ -582,7 +582,7 @@ public class GenerateMap : MonoBehaviour
                         failCounter++;
                         i = -1;
                     }
-                    if(schleifeCurrentIndex % MapBREITE == 0)
+                    if (schleifeCurrentIndex % MapBREITE == 0)
                     {
                         i = -1;
                     }
@@ -615,22 +615,22 @@ public class GenerateMap : MonoBehaviour
                     moved = true;
                 }
             }
-            if((schleifeCurrentIndex + 1)%MapBREITE != 0)
+            if ((schleifeCurrentIndex + 1) % MapBREITE != 0)
             {
                 for (int i = schleifeCurrentIndex + 1; i < MapBREITE * MapHoehe - 1; i++)
                 {
-                    if(blockedIndex[i] == 0)
+                    if (blockedIndex[i] == 0)
                     {
                         schleifeCurrentIndex = i;
                         failCounter = 0;
                         rightLeftCounter++;
                     }
-                    if(blockedIndex[i] == 1)
+                    if (blockedIndex[i] == 1)
                     {
                         failCounter++;
                         i = MapBREITE * MapHoehe;
                     }
-                    if((schleifeCurrentIndex + 1)%MapBREITE == 0)
+                    if ((schleifeCurrentIndex + 1) % MapBREITE == 0)
                     {
                         i = MapBREITE * MapHoehe;
                     }
@@ -685,7 +685,7 @@ public class GenerateMap : MonoBehaviour
             Debug.Log("Moved Down");
         }
     }
-    
+
     private void moveUp()
     {
         nextIndex = currentIndex + MapHoehe;
@@ -695,12 +695,12 @@ public class GenerateMap : MonoBehaviour
         int rightPos = 0;
         blockedIndex[currentIndex] = 1;
         blockedIndex[currentIndex - MapHoehe] = 1;
-        if(currentIndex % MapBREITE != 0)
+        if (currentIndex % MapBREITE != 0)
         {
             leftPos = blockedIndex[currentIndex - 1];
             blockedIndex[currentIndex - 1] = 1;
         }
-        if((currentIndex + 1) % MapBREITE != 0)
+        if ((currentIndex + 1) % MapBREITE != 0)
         {
             rightPos = blockedIndex[currentIndex + 1];
             blockedIndex[currentIndex + 1] = 1;
@@ -843,10 +843,10 @@ public class GenerateMap : MonoBehaviour
             Debug.Log("Moved Up");
         }
     }
-    
+
     private void moveLeft()
     {
-        nextIndex = currentIndex-1;
+        nextIndex = currentIndex - 1;
         int currentPos = blockedIndex[currentIndex];
         int topPos = blockedIndex[currentIndex + MapHoehe];
         int botPos = blockedIndex[currentIndex - MapHoehe];
@@ -854,7 +854,7 @@ public class GenerateMap : MonoBehaviour
         blockedIndex[currentIndex] = 1;
         blockedIndex[currentIndex + MapHoehe] = 1;
         blockedIndex[currentIndex - MapHoehe] = 1;
-        if((currentIndex + 1) % MapBREITE != 0)
+        if ((currentIndex + 1) % MapBREITE != 0)
         {
             rightPos = blockedIndex[currentIndex + 1];
             blockedIndex[currentIndex + 1] = 1;
@@ -993,7 +993,7 @@ public class GenerateMap : MonoBehaviour
     }
     private void moveRight()
     {
-        nextIndex = currentIndex+1;
+        nextIndex = currentIndex + 1;
         int currentPos = blockedIndex[currentIndex];
         int topPos = blockedIndex[currentIndex + MapHoehe];
         int botPos = blockedIndex[currentIndex - MapHoehe];
@@ -1001,7 +1001,7 @@ public class GenerateMap : MonoBehaviour
         blockedIndex[currentIndex] = 1;
         blockedIndex[currentIndex + MapHoehe] = 1;
         blockedIndex[currentIndex - MapHoehe] = 1;
-        if(currentIndex % MapBREITE != 0)
+        if (currentIndex % MapBREITE != 0)
         {
             leftPos = blockedIndex[currentIndex + 1];
             blockedIndex[currentIndex - 1] = 1;
