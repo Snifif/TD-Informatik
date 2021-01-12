@@ -6,22 +6,22 @@ using UnityEngine;
 public class EnemyBehavior2 : MonoBehaviour
 {
     private GameObject TargetNode;
-    [SerializeField]
-    private float Health;
-    [SerializeField]
-    private float Damage;
-    [SerializeField]
-    private float Speed;
-    [SerializeField]
-    private float KillReward;
+    [SerializeField] private float health = 1;
+    [SerializeField] private float damage;
+    [SerializeField] private float speed;
+    [SerializeField] private float killReward;
 
 
-    private float Distancex;
-    private float Distancez;
+    private float distanceX;
+    private float distanceZ;
 
-    public Vector3 TargetZPos;
-    public Vector3 TargetXPos;
+    public Vector3 targetPos; //hat x,y,z
     public Vector3 EndNodePos;
+
+    private void Awake()
+    {
+        ListEnemies.enemies.Add(gameObject);
+    }
 
     void Start()
     {
@@ -38,43 +38,30 @@ public class EnemyBehavior2 : MonoBehaviour
 
     private void InitializeEnemy()
     {
-        TargetNode = GenerateMap.PathNodes[0];
+        TargetNode = GenerateMap.startTile;
     }
 
     private void MoveEnemy()
     {
 
-<<<<<<< Updated upstream
-      TargetXPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z ); // nur in x und z Richtung zum TargetNode bewegen
-      transform.position = Vector3.MoveTowards(transform.position, TargetXPos, Speed * Time.deltaTime   );
-     
-=======
         targetPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z); // nur in x und z Richtung zum TargetNode bewegen
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
 
->>>>>>> Stashed changes
 
     }
 
     private void CheckTargetNode()
     {
-        Distancex = Mathf.Abs(transform.position.x - TargetNode.transform.position.x);
-        Distancez = Mathf.Abs(transform.position.z - TargetNode.transform.position.z);
+        distanceX = Mathf.Abs(transform.position.x - TargetNode.transform.position.x);
+        distanceZ = Mathf.Abs(transform.position.z - TargetNode.transform.position.z);
 
         if (TargetNode != null && TargetNode != GenerateMap.endTile)
         {
-<<<<<<< Updated upstream
-            
-            if (Distancex <= 0.01f && Distancez <= 0.01f)
-=======
 
             if (distanceX <= 0.01f && distanceZ <= 0.01f)
->>>>>>> Stashed changes
             {
                 int NextTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode) + 1;
                 TargetNode = GenerateMap.PathNodes[NextTargetNode];
-
-
             }
 
         }
@@ -93,7 +80,7 @@ public class EnemyBehavior2 : MonoBehaviour
 
     private void CheckEnemy()
     {
-        if (Health <= 0f)
+        if (health <= 0f)
         {
             die();
             // füge Killreward zu Geld hinzu
@@ -101,8 +88,6 @@ public class EnemyBehavior2 : MonoBehaviour
         }
 
     }
-<<<<<<< Updated upstream
-=======
 
     public void takeDamage(float damageAmount)
     {
@@ -114,9 +99,9 @@ public class EnemyBehavior2 : MonoBehaviour
         }
     }
 
->>>>>>> Stashed changes
     private void die()
     {
+        ListEnemies.enemies.Remove(gameObject);
         Destroy(transform.gameObject);
     }
 }
