@@ -514,8 +514,7 @@ public class GenerateMap : MonoBehaviour
         endTile = PathNodes[lengthCounterPath - 1];
         startTile.GetComponent<Renderer>().material = StartMaterial;
         endTile.GetComponent<Renderer>().material = EndMaterial;
-        PathNodes[lengthCounterPath - 1].AddComponent<HQ>();
-
+        
 
     }
     

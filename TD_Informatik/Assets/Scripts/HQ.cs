@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class HQ : MonoBehaviour
 {
-    public int HQHealth;
-    public int Money;
-
-
-    public List<GameObject> EnemyList = new List<GameObject>();
-
-    private void Update()
+    // Start is called before the first frame update
+    void Start()
     {
-        if (HQHealth <= 0)
-        {
-            // DIsable ui und game over screen einfügen
-        }
+        
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }
