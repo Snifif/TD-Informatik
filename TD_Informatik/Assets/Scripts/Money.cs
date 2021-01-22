@@ -18,11 +18,11 @@ public class Money : MonoBehaviour
 
     void Update()
     {
-
-        for (deathcount = 8; deathcount > 0; deathcount--)
+        for (deathcount = EnemyBehavior2.deathtrack; deathcount > 0; deathcount--)
         {
             money = money + 5;
             MoneyShow.text = "Money: " + money.ToString();
         }
+        EnemyBehavior2.deathtrack = 0;
     }
 }
