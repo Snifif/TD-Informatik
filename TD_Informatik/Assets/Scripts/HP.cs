@@ -19,8 +19,16 @@ public class HP : MonoBehaviour
         for (int i = EnemyBehavior2.playerdmg; i > 0; i--)
         {
             hp = hp - 20;
+            if (hp == 0)
+            {
+                Over();
+            }
         }
         EnemyBehavior2.playerdmg = 0;
         HPTrack.text = "HP: " + hp.ToString();
+    }
+    void Over()
+    {
+
     }
 }

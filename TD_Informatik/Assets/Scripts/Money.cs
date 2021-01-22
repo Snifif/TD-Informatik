@@ -22,7 +22,8 @@ public class Money : MonoBehaviour
 
         for (deathcount = EnemyBehavior2.deathtrack; deathcount > 0; deathcount--)
         {
-            money = money + 5;
+            money += 5;
+            Points.points += 5;
         }
         EnemyBehavior2.deathtrack = 0;
         UpdateBalance();
