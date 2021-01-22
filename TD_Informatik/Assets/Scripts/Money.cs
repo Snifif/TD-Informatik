@@ -7,7 +7,7 @@ public class Money : MonoBehaviour
 {
     // Start is called before the first frame update
     public int deathcount; //Killcount
-    public static int money; //Startgeld noch festlegen (50 Start, 20T/100L?) //70 / 20 / 200 //
+    public static int money ; //Startgeld noch festlegen (50 Start, 20T/100L?) //70 / 20 / 200 //
     public static Text MoneyShow;
 
     void Start()
