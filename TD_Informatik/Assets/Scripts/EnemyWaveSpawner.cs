@@ -8,6 +8,11 @@ public class EnemyWaveSpawner : MonoBehaviour
     public GameObject Enemy2;
 
     int WaveCount = 1;
+    int EnemySpawnAmount = 5;
+    int EnemiesSpawned;
+
+    float WaveTimer = 1f;
+    float TimeWaited;
     public bool checkwave = true;
     void Start()
     {
@@ -17,7 +22,6 @@ public class EnemyWaveSpawner : MonoBehaviour
     void Update()
     {
         Wave();
-        ExecuteAfterTime(1f);
         CheckEnemies();
     }
 
@@ -25,30 +29,27 @@ public class EnemyWaveSpawner : MonoBehaviour
     {
         if (checkwave == true)
         {
-            ExecuteAfterTime(1000f);
-            int EnemySpawnAmount = 5;
 
-            for (int i = 0; i <= EnemySpawnAmount; i++)
+            if (WaveTimer <= TimeWaited)
             {
-                GameObject newenemy = Instantiate(Enemy1);
-                newenemy.transform.position = new Vector3(GenerateMap.startTile.transform.position.x, 1, GenerateMap.startTile.transform.position.z);
-                ExecuteAfterTime(1.5f);
-
+                TimeWaited = 0;
+                Instantiate(Enemy1, new Vector3(GenerateMap.startTile.transform.position.x, 1, GenerateMap.startTile.transform.position.z), Quaternion.identity);
+                EnemiesSpawned++;
+                if (EnemiesSpawned == EnemySpawnAmount)
+                {
+                    checkwave = false;
+                    EnemiesSpawned = 0;
+                    EnemySpawnAmount += 5;
+                    WaveTimer -= 0.2f * WaveTimer;
+                }
             }
-            WaveCount++;
-            EnemySpawnAmount = EnemySpawnAmount + 3;
-            checkwave = false;
+            TimeWaited += Time.deltaTime;
         }
-    }
-    IEnumerator ExecuteAfterTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-
     }
 
     void CheckEnemies()
     {
-        if (ListEnemies.enemies.Count == 0)
+        if (ListEnemies.enemies.Count == 0 && checkwave == false)
         {
             checkwave = true;
         }
