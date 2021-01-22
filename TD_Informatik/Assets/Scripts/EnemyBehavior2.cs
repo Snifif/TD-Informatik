@@ -17,10 +17,8 @@ public class EnemyBehavior2 : MonoBehaviour
 
     public Vector3 targetPos; //hat x,y,z
     public Vector3 EndNodePos;
-<<<<<<< HEAD
-=======
-    public int deathtrack;
->>>>>>> parent of 8309f02... Geld zählt bei Kills hoch
+
+    public static int deathtrack; //Geld zählt bei Kills hoch
 
     private void Awake()
     {
@@ -100,13 +98,14 @@ public class EnemyBehavior2 : MonoBehaviour
         if (health <= 0)
         {
             die();
+            deathtrack = deathtrack + 1; //Trackt nur ingesamt kills
         }
     }
+    
 
     private void die()
     {
         ListEnemies.enemies.Remove(gameObject);
         Destroy(transform.gameObject);
-        deathtrack = deathtrack + 1; //Trackt nur ingesamt kills
     }
 }
