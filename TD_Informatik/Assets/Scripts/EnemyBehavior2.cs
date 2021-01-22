@@ -17,7 +17,6 @@ public class EnemyBehavior2 : MonoBehaviour
 
     public Vector3 targetPos; //hat x,y,z
     public Vector3 EndNodePos;
-    public static int deathtrack;
 
     private void Awake()
     {
@@ -97,7 +96,6 @@ public class EnemyBehavior2 : MonoBehaviour
         if (health <= 0)
         {
             die();
-            deathtrack = deathtrack + 1; //Trackt nur ingesamt kills
         }
     }
 
