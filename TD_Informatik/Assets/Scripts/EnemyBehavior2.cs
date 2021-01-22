@@ -18,6 +18,7 @@ public class EnemyBehavior2 : MonoBehaviour
     public Vector3 targetPos; //hat x,y,z
     public Vector3 EndNodePos;
     public static int deathtrack; //Geld zählt bei Kills hoch
+    public static int playerdmg;
 
     private void Awake()
     {
@@ -51,7 +52,7 @@ public class EnemyBehavior2 : MonoBehaviour
 
     }
 
-    private void CheckTargetNode()
+    public void CheckTargetNode()
     {
         distanceX = Mathf.Abs(transform.position.x - TargetNode.transform.position.x);
         distanceZ = Mathf.Abs(transform.position.z - TargetNode.transform.position.z);
@@ -73,7 +74,8 @@ public class EnemyBehavior2 : MonoBehaviour
         }
         if (transform.position == EndNodePos)  // wenn am Ziel -> Tod des Enemy und schaden bekommen
         {
-            die();
+            playerdmg = playerdmg + 1;
+            die();     
             // Lebenspunkte schaden abziehen
         }
 
