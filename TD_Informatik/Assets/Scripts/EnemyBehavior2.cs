@@ -17,6 +17,7 @@ public class EnemyBehavior2 : MonoBehaviour
 
     public Vector3 targetPos; //hat x,y,z
     public Vector3 EndNodePos;
+    public int deathtrack;
 
     private void Awake()
     {
@@ -103,5 +104,6 @@ public class EnemyBehavior2 : MonoBehaviour
     {
         ListEnemies.enemies.Remove(gameObject);
         Destroy(transform.gameObject);
+        deathtrack = deathtrack + 1; //Trackt nur ingesamt kills
     }
 }
