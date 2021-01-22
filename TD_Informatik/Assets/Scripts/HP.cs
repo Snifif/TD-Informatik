@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HP : MonoBehaviour
 {
@@ -21,14 +22,14 @@ public class HP : MonoBehaviour
             hp = hp - 20;
             if (hp == 0)
             {
-                Over();
+                SampleScene.StartPressedScriptOver();
             }
         }
         EnemyBehavior2.playerdmg = 0;
         HPTrack.text = "HP: " + hp.ToString();
     }
-    void Over()
+    public void Over()
     {
-
+        SceneManager.LoadScene("Overscreen");
     }
 }
