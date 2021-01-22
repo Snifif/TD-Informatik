@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8019706985289985802}
   - component: {fileID: 4184748034876034447}
   - component: {fileID: 5727981162631631774}
+  - component: {fileID: -5514138160349936170}
   m_Layer: 0
   m_Name: Node
   m_TagString: Untagged
@@ -93,3 +94,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-5514138160349936170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7930902261028519662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5e1ba2aaff6c794d9c7b57b2c4d2536, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LaserTower: {fileID: 2161406276765568958, guid: 4ef9037bdfdf7f44fa134a15c3905e2c,
+    type: 3}
+  TurretTower: {fileID: 2408204705570051633, guid: 097fa0a503cd5704b883970bf13697c3,
+    type: 3}

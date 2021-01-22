@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class HQ : MonoBehaviour
 {
-    public static int GELD;
-    public static int HEALTH;
-    public static int Punkte;
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }
