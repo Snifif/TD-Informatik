@@ -11,7 +11,7 @@ public class EnemyWaveSpawner : MonoBehaviour
     int EnemySpawnAmount = 5;
     int EnemiesSpawned;
 
-    float WaveTimer = 1f;
+    float WaveTimer = 3f;
     float TimeWaited;
     public bool checkwave = true;
     void Start()
@@ -52,6 +52,7 @@ public class EnemyWaveSpawner : MonoBehaviour
         if (ListEnemies.enemies.Count == 0 && checkwave == false)
         {
             checkwave = true;
+            WaveCount++;
         }
     }
 }
