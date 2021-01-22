@@ -17,7 +17,6 @@ public class EnemyBehavior2 : MonoBehaviour
 
     public Vector3 targetPos; //hat x,y,z
     public Vector3 EndNodePos;
-
     public static int deathtrack; //Geld zählt bei Kills hoch
 
     private void Awake()
