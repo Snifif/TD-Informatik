@@ -17,10 +17,10 @@ public class HP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = EnemyBehavior2.playerdmg; i > 0; i--)
+        for (int i = EnemyBehavior2.playerdmg; i > 0; i--)  
         {
-            hp = hp - 20;
-            if (hp == 0)
+            hp = hp - 20; 
+            if (hp == 0)    // Wenn tot -> Gameoverscreen
             {
                 SceneManager.LoadScene("Overscreen");
             }

@@ -12,10 +12,10 @@ public class NodeScript : MonoBehaviour
 
     }
 
-    private void OnMouseDown()
+    private void OnMouseDown()  // Spawnen vom gewünschten Tower, wenn auf ein Node gedrückt wird
     {
         {     
-            if (GameMenu.LT == true && Money.money >= 130)
+            if (GameMenu.LT == true && Money.money >= 130)   
             {
                 Instantiate(LaserTower, new Vector3(gameObject.transform.position.x, 0.8f, gameObject.transform.position.z), Quaternion.identity);
                 Money.money = Money.money - 130;

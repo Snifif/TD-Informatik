@@ -52,12 +52,12 @@ public class EnemyBehavior2 : MonoBehaviour
 
     }
 
-    public void CheckTargetNode()
+    public void CheckTargetNode() // chekt distanz und wechselt ziel wenn in distnaz zu klein ist
     {
         distanceX = Mathf.Abs(transform.position.x - TargetNode.transform.position.x);
         distanceZ = Mathf.Abs(transform.position.z - TargetNode.transform.position.z);
 
-        if (TargetNode != null && TargetNode != GenerateMap.endTile)
+        if (TargetNode != null && TargetNode != GenerateMap.endTile)    
         {
 
             if (distanceX <= 0.01f && distanceZ <= 0.01f)
@@ -74,9 +74,8 @@ public class EnemyBehavior2 : MonoBehaviour
         }
         if (transform.position == EndNodePos)  // wenn am Ziel -> Tod des Enemy und schaden bekommen
         {
-            playerdmg = playerdmg + 1;
-            die();     
-            // Lebenspunkte schaden abziehen
+            playerdmg = playerdmg + 1; // schden kriegen
+            die();   
         }
 
     }
@@ -86,7 +85,6 @@ public class EnemyBehavior2 : MonoBehaviour
         if (health <= 0f)
         {
             die();
-            // füge Killreward zu Geld hinzu
 
         }
 

@@ -30,7 +30,7 @@ public class EnemyWaveSpawner : MonoBehaviour
 
     void Wave()
     {
-        if (checkwave == true)
+        if (checkwave == true)    // erst spawnen alle vorherigen tot sind
         {
 
             if (WaveTimer <= TimeWaited)
@@ -38,7 +38,7 @@ public class EnemyWaveSpawner : MonoBehaviour
                 TimeWaited = 0;
                 Instantiate(Enemy1, new Vector3(GenerateMap.startTile.transform.position.x, 1, GenerateMap.startTile.transform.position.z), Quaternion.identity);
                 EnemiesSpawned++;
-                if (EnemiesSpawned == EnemySpawnAmount)
+                if (EnemiesSpawned == EnemySpawnAmount)  // wenn alle gespawnt sind das untere machen
                 {
                     checkwave = false;
                     EnemiesSpawned = 0;
@@ -52,7 +52,7 @@ public class EnemyWaveSpawner : MonoBehaviour
 
     public void CheckEnemies()
     {
-        if (ListEnemies.enemies.Count == 0 && checkwave == false)
+        if (ListEnemies.enemies.Count == 0 && checkwave == false)       // wenn alle tot sind
         {
             checkwave = true;
             Money.money += 50; // Wave Gewonnen -> Geld bekommen
