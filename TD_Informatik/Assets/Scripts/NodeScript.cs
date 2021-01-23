@@ -14,22 +14,20 @@ public class NodeScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        {
-            if (Input.GetMouseButton(0))
+        {     
+            if (GameMenu.LT == true && Money.money >= 130)
             {
-                if (GameMenu.LT == true && Money.money >= 130)
-                {
-                    Instantiate(LaserTower, new Vector3(gameObject.transform.position.x, 0.8f, gameObject.transform.position.z), Quaternion.identity);
-                    Money.money = Money.money - 130;
-                }
-
-                if (GameMenu.TT == true && Money.money >=20)
-                {
-                    Instantiate(TurretTower, new Vector3(gameObject.transform.position.x, 0.8f, gameObject.transform.position.z), Quaternion.identity);
-                    Money.money = Money.money - 20;
-                }
-                Money.UpdateBalance();
+                Instantiate(LaserTower, new Vector3(gameObject.transform.position.x, 0.8f, gameObject.transform.position.z), Quaternion.identity);
+                Money.money = Money.money - 130;
             }
+
+            if (GameMenu.TT == true && Money.money >=20)
+            {
+                Instantiate(TurretTower, new Vector3(gameObject.transform.position.x, 0.8f, gameObject.transform.position.z), Quaternion.identity);
+                Money.money = Money.money - 20;
+            }
+            Money.UpdateBalance();
+            
         }
     }
 }
