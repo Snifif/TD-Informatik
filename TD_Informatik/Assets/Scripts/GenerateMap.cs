@@ -33,6 +33,9 @@ public class GenerateMap : MonoBehaviour
 
     private void Start()
     {
+        MapNodes.Clear();
+        EnemyNodes.Clear();
+        PathNodes.Clear();
         MapGenerate();
     }
 
