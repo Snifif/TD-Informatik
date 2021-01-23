@@ -8,7 +8,7 @@ public class EnemyBehavior2 : MonoBehaviour
     private GameObject TargetNode;
     [SerializeField] private float health = 1;
     [SerializeField] private float damage;
-    public static float speed = 1;
+    [SerializeField] private float speed;
     [SerializeField] private float killReward;
 
 

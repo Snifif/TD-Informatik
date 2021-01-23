@@ -18,6 +18,27 @@ public class Tower : MonoBehaviour
 
     }
 
+    // new Vector3 = GenerateMap.MapNodes;
+    //void SnapToNode()
+    //{
+    //    float ClosestDistance = 99999;
+    //    int NodeAmount = GenerateMap.MapNodes.Count;
+    //    int ClosestNode = 0;
+
+    //    for (int i = 0; i < NodeAmount; i++)
+    //    {
+    //        float distance = Vector3.Distance (GenerateMap.MapNodes[i].transform.position, gameObject.transform.position);
+    //        if ( distance < ClosestDistance )
+    //        {
+    //            ClosestDistance = distance;
+    //            ClosestNode = i;
+    //        }
+
+    //    }
+    //    gameObject.transform.position = new Vector3(GenerateMap.MapNodes[ClosestNode].transform.position.x, 1, GenerateMap.MapNodes[ClosestNode].transform.position.z);
+        
+    //}
+
     private void updateClosestEnemy() // wird ausgeführt werden, wenn Türme so eingestellt sind, dass sie den nächsten Gegner angreifen sollen (sucht nach dem Gegner mit der geringsten Entfernung zum Turm
     {
         GameObject nearestEnemy = null;
@@ -103,8 +124,10 @@ public class Tower : MonoBehaviour
         enemyScript.takeDamage(damage);
     }
 
-    private void OnMouseDown()   // wenn drauf ge clickt wird updatemode ändern
+    private void Update()
     {
+        //SnapToNode();
+
         if (updateMode == 0)
         {
             updateClosestEnemy();
@@ -121,12 +144,6 @@ public class Tower : MonoBehaviour
                 nextAttackTime = Time.time + attackSpeed;
             }
         }
-    }
-
-    private void Update()
-    {
         
-
-     
     }
 }

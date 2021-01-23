@@ -1,19 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic; 
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EnemyWaveSpawner : MonoBehaviour
 {
     public GameObject Enemy1;
     public GameObject Enemy2;
-    public static Text Wavee;
 
     int WaveCount = 1;
     int EnemySpawnAmount = 5;
     int EnemiesSpawned;
 
-    float WaveTimer = 2f;
+    float WaveTimer = 3f;
     float TimeWaited;
     public bool checkwave = true;
     void Start()
@@ -23,7 +21,6 @@ public class EnemyWaveSpawner : MonoBehaviour
 
     void Update()
     {
-        Wavee = GetComponent<Text>(); 
         Wave();
         CheckEnemies();
     }
@@ -50,17 +47,12 @@ public class EnemyWaveSpawner : MonoBehaviour
         }
     }
 
-    public void CheckEnemies()
+    void CheckEnemies()
     {
         if (ListEnemies.enemies.Count == 0 && checkwave == false)
         {
             checkwave = true;
-            Money.money += 50; // Wave Gewonnen -> Geld bekommen
-            Points.points += 100;
             WaveCount++;
-            Wavee.text = "Wave " + WaveCount.ToString();
-            EnemyBehavior2.speed += 0.1f; // Gegner werden schneller
-
         }
     }
 }
