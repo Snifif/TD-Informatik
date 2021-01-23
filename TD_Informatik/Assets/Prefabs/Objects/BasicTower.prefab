@@ -108,6 +108,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 5
-  damage: 2
+  damage: 3
   attackSpeed: 1
   updateMode: 0
