@@ -105,6 +105,11 @@ public class Tower : MonoBehaviour
 
     private void OnMouseDown()   // wenn drauf ge clickt wird updatemode ändern
     {
+
+    }
+
+    private void Update()
+    {
         if (updateMode == 0)
         {
             updateClosestEnemy();
@@ -121,12 +126,7 @@ public class Tower : MonoBehaviour
                 nextAttackTime = Time.time + attackSpeed;
             }
         }
-    }
 
-    private void Update()
-    {
-        
 
-     
     }
 }

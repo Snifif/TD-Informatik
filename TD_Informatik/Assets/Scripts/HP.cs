@@ -22,7 +22,7 @@ public class HP : MonoBehaviour
             hp = hp - 20;
             if (hp == 0)
             {
-                SampleScene.StartPressedScriptOver();
+                SceneManager.LoadScene("Overscreen");
             }
         }
         EnemyBehavior2.playerdmg = 0;
