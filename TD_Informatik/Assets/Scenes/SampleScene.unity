@@ -921,7 +921,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'LaserTower
 
-    130'
+    140'
 --- !u!222 &1023712583
 CanvasRenderer:
   m_ObjectHideFlags: 0
