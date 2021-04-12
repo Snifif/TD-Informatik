@@ -46,6 +46,7 @@ public class Tower : MonoBehaviour
 
     }
 
+    /*
     private void updateFurthestEnemy() // wird ausgeführt werden, wenn die Türme so eingestellt sind, dass sie den Gegner angreifen sollen, der dem Ziel am nächsten ist
     {
         GameObject furthestEnemy = null;
@@ -94,6 +95,24 @@ public class Tower : MonoBehaviour
         else
         {
             currentTarget = null;
+        }
+    }
+    */
+
+    private void updateFurthestEnemy()
+    {
+        GameObject furthestEnemy = null;
+        int highestIndex = 0;
+        foreach(GameObject gegner in ListEnemies.enemies)
+        {
+            EnemyBehavior2 enemyScript = currentTarget.GetComponent<EnemyBehavior2>();
+            float distance = (transform.position - gegner.transform.position).magnitude;
+            if(distance < range)
+            {
+                int targetIndex = 0;
+                enemyScript.getIndex();
+                targetIndex = enemyScript.indexOfTargetNode;
+            }
         }
     }
 

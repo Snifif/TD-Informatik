@@ -19,6 +19,7 @@ public class EnemyBehavior2 : MonoBehaviour
     public Vector3 EndNodePos;
     public static int deathtrack; //Geld zählt bei Kills hoch
     public static int playerdmg;
+    [SerializeField] internal int indexOfTargetNode;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class EnemyBehavior2 : MonoBehaviour
     private void InitializeEnemy()
     {
         TargetNode = GenerateMap.startTile;
+        indexOfTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode);
     }
 
     private void MoveEnemy()
@@ -64,6 +66,7 @@ public class EnemyBehavior2 : MonoBehaviour
             {
                 int NextTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode) + 1;
                 TargetNode = GenerateMap.PathNodes[NextTargetNode];
+                indexOfTargetNode = NextTargetNode;
             }
 
         }
@@ -78,6 +81,12 @@ public class EnemyBehavior2 : MonoBehaviour
             die();   
         }
 
+    }
+
+    public void getIndex()
+    {
+        indexOfTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode);
+        int indexTest = indexOfTargetNode;
     }
 
     private void CheckEnemy()
