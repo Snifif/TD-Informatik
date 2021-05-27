@@ -83,12 +83,6 @@ public class EnemyBehavior2 : MonoBehaviour
 
     }
 
-    public void getIndex()
-    {
-        indexOfTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode);
-        int indexTest = indexOfTargetNode;
-    }
-
     private void CheckEnemy()
     {
         if (health <= 0f)

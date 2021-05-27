@@ -110,4 +110,4 @@ MonoBehaviour:
   range: 5
   damage: 3
   attackSpeed: 1
-  updateMode: 0
+  updateMode: 1

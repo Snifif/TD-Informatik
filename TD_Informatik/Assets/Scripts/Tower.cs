@@ -7,7 +7,7 @@ public class Tower : MonoBehaviour
     [SerializeField] private float range;
     [SerializeField] private float damage;
     [SerializeField] private float attackSpeed;
-    [SerializeField] private int updateMode = 0;
+    [SerializeField] private int updateMode = 1;
     private float nextAttackTime;
 
     private GameObject currentTarget;
@@ -46,76 +46,38 @@ public class Tower : MonoBehaviour
 
     }
 
-    /*
-    private void updateFurthestEnemy() // wird ausgeführt werden, wenn die Türme so eingestellt sind, dass sie den Gegner angreifen sollen, der dem Ziel am nächsten ist
+    private void updateFurthestEnemy()
     {
-        GameObject furthestEnemy = null;
-
-        float distance = range;
-        int highestIndex = 0;
-        float distanceToPathNode = Mathf.Infinity;
+        GameObject target = null;
+        int highestIndexOfTarget = 0;
+        float highestDistanceToNextNode = 0;
 
         foreach (GameObject gegner in ListEnemies.enemies)
         {
-            float distance2 = (transform.position - gegner.transform.position).magnitude; //distance2 speichert den Abstand des Turms zum Gegner
-            for (int i = 0; i < GenerateMap.PathNodes.Count; i++) //sucht die aktuelle Streckenposition des Gegners (in highestIndex gespeichert)
-            {
-                Vector3 currentPathNodePos = new Vector3(GenerateMap.PathNodes[i].transform.position.x, 1, GenerateMap.PathNodes[i].transform.position.z);
-                if ((gegner.transform.position - currentPathNodePos).magnitude < 2)
-                {
-                    Vector3 nextPathNodePos = new Vector3();
-                    if (i != GenerateMap.PathNodes.Count - 1)
-                    {
-                        nextPathNodePos = new Vector3(GenerateMap.PathNodes[i + 1].transform.position.x, 1, GenerateMap.PathNodes[i + 1].transform.position.z); // kann eventuell Probleme machen
-                    }
-                    else
-                    {
-                        nextPathNodePos = currentPathNodePos;
-                        Debug.Log("nextPathNodePos = currentPathNodePos");
-                    }
-
-                    if (i > highestIndex || ((i == highestIndex) && (gegner.transform.position - nextPathNodePos).magnitude < distanceToPathNode))
-                    {
-                        if (distance2 <= distance)
-                        {
-                            highestIndex = i;
-                            distanceToPathNode = (gegner.transform.position - nextPathNodePos).magnitude;
-                            i = GenerateMap.PathNodes.Count;
-                            furthestEnemy = gegner;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (furthestEnemy != null)
-        {
-            currentTarget = furthestEnemy;
-        }
-        else
-        {
-            currentTarget = null;
-        }
-    }
-    */
-
-    private void updateFurthestEnemy()
-    {
-        GameObject furthestEnemy = null;
-        int highestIndex = 0;
-        foreach(GameObject gegner in ListEnemies.enemies)
-        {
-            EnemyBehavior2 enemyScript = currentTarget.GetComponent<EnemyBehavior2>();
             float distance = (transform.position - gegner.transform.position).magnitude;
-            if(distance < range)
+            if (distance <= range)
             {
+                EnemyBehavior2 enemyScript = gegner.GetComponent<EnemyBehavior2>(); //machte Probleme
                 int targetIndex = 0;
-                enemyScript.getIndex();
-                targetIndex = enemyScript.indexOfTargetNode;
+                float distanceToTargetNode = 0;
+                targetIndex = enemyScript.indexOfTargetNode;//machte auch Probleme
+                GameObject targetNode = GenerateMap.PathNodes[targetIndex];
+                distanceToTargetNode = (gegner.transform.position - targetNode.transform.position).magnitude;
+                if(((targetIndex == highestIndexOfTarget) && (distanceToTargetNode >= highestDistanceToNextNode)) || (targetIndex > highestIndexOfTarget))
+                {
+                    highestIndexOfTarget = targetIndex;
+                    highestDistanceToNextNode = distanceToTargetNode;
+                    target = gegner;
+                }
+                
+                
             }
         }
-    }
 
+        currentTarget = target;
+
+    }
+    
     private void shoot()
     {
         EnemyBehavior2 enemyScript = currentTarget.GetComponent<EnemyBehavior2>();
