@@ -106,7 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e1ba2aaff6c794d9c7b57b2c4d2536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LaserTower: {fileID: 2161406276765568958, guid: 4ef9037bdfdf7f44fa134a15c3905e2c,
+  LaserTower: {fileID: 2161406276765568958, guid: d3f7df8be4d38084a8165b1604293af5,
     type: 3}
-  TurretTower: {fileID: 2408204705570051633, guid: 097fa0a503cd5704b883970bf13697c3,
+  TurretTower: {fileID: 7429810771931842435, guid: b2651564fb5759e4b8c4448fbe2cef5f,
     type: 3}
+  NewTurretTower: {fileID: 0}

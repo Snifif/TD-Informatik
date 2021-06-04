@@ -108,5 +108,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LaserTower: {fileID: 2161406276765568958, guid: d3f7df8be4d38084a8165b1604293af5,
     type: 3}
-  TurretTower: {fileID: 2408204705570051633, guid: 404df278e198b5242847361dd609c9f2,
+  TurretTower: {fileID: 7429810771931842435, guid: b2651564fb5759e4b8c4448fbe2cef5f,
     type: 3}

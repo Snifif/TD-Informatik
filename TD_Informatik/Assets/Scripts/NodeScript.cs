@@ -6,6 +6,7 @@ public class NodeScript : MonoBehaviour
 {
     public GameObject LaserTower;
     public GameObject TurretTower;
+ 
 
     void Update()
     {
