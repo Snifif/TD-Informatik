@@ -25,6 +25,7 @@ public class GenerateMap : MonoBehaviour
     private int nextIndex;
     private bool moved = false;
     [SerializeField] private int endTilePos;
+    [SerializeField] private int startTilePos;
 
     public Material StartMaterial;
     public Material EndMaterial;
@@ -63,9 +64,9 @@ public class GenerateMap : MonoBehaviour
 
     private void MapGenerate()
     {
-        for (int z = 0; z < 2 * MapBREITE; z = z + 2)
+        for (int z = 0; z < 2 * MapHoehe; z = z + 2)
         {
-            for (int x = 0; x < 2 * MapHoehe; x = x + 2)
+            for (int x = 0; x < 2 * MapBREITE; x = x + 2)
             {
                 GameObject newNode = Instantiate(Node);
                 newNode.transform.position = new Vector3(x, 0, z);
@@ -88,6 +89,8 @@ public class GenerateMap : MonoBehaviour
         startTileGen = topTiles[randTop]; //setzt zufälliges Tile vom oberen Rand als Startpunkt fest
         endTileGen = bottomTiles[randBottom]; //setzt zufälliges Tile vom unteren Rand als Startpunkt fest
         endTilePos = randBottom;
+        startTilePos = randTop;
+        
 
         currentTile = startTileGen;
 
@@ -97,14 +100,14 @@ public class GenerateMap : MonoBehaviour
         }
 
         //Path Generation
-        for (int i = 0; i < MapBREITE; i++) // blockiert alle Elemente der oberen Reihe, die nicht das endTile sind
+        for (int i = 0; i < MapBREITE; i++) // blockiert alle Elemente der oberen Reihe, die nicht das startTile sind
         {
             if (randTop != i)
             {
                 blockedIndex[(MapHoehe - 1) * MapBREITE + i] = 1;
             }
         }
-        for (int i = 0; i < MapBREITE; i++) // blockiert alle Elemente der unteren Reihe, die nicht das startTile sind
+        for (int i = 0; i < MapBREITE; i++) // blockiert alle Elemente der unteren Reihe, die nicht das endTile sind
         {
             if (randBottom != i)
             {
@@ -128,7 +131,7 @@ public class GenerateMap : MonoBehaviour
             {
                 finishedMapGen = true;
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung in alle Richtungen möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 0 && (blockedIndex[currentIndex + MapBREITE]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung in alle Richtungen möglich
             {
                 randomStorage = Random.Range(0, 4);
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
@@ -189,7 +192,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach rechts nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 0 && (blockedIndex[currentIndex + MapBREITE]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach rechts nicht möglich
             {
                 randomStorage = Random.Range(0, 3);
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
@@ -223,7 +226,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach links nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 0 && (blockedIndex[currentIndex + MapBREITE]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach links nicht möglich
             {
                 randomStorage = Random.Range(0, 3);
                 if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
@@ -257,7 +260,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach links und rechts nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 0 && (blockedIndex[currentIndex + MapBREITE]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach links und rechts nicht möglich
             {
                 randomStorage = Random.Range(0, 2);
                 if (randomStorage == 0)
@@ -269,7 +272,7 @@ public class GenerateMap : MonoBehaviour
                     moveUp();
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach oben nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 0 && (blockedIndex[currentIndex + MapBREITE]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach oben nicht möglich
             {
                 randomStorage = Random.Range(0, 3);
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
@@ -318,7 +321,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach oben und rechts nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 0 && (blockedIndex[currentIndex + MapBREITE]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach oben und rechts nicht möglich
             {
                 randomStorage = Random.Range(0, 2);
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
@@ -337,7 +340,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach oben und links nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 0 && (blockedIndex[currentIndex + MapBREITE]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach oben und links nicht möglich
             {
                 randomStorage = Random.Range(0, 2);
                 if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
@@ -356,11 +359,11 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 0 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach oben, links und rechts nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 0 && (blockedIndex[currentIndex + MapBREITE]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach oben, links und rechts nicht möglich
             {
                 moveDown();
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 1 && (blockedIndex[currentIndex + MapBREITE]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten nicht möglich
             {
                 randomStorage = Random.Range(0, 3);
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
@@ -409,7 +412,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten und rechts nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 1 && (blockedIndex[currentIndex + MapBREITE]) == 0 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten und rechts nicht möglich
             {
                 randomStorage = Random.Range(0, 2);
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
@@ -428,7 +431,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten und links nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 1 && (blockedIndex[currentIndex + MapBREITE]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten und links nicht möglich
             {
                 randomStorage = Random.Range(0, 2);
                 if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
@@ -447,11 +450,11 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten, links und rechts nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 1 && (blockedIndex[currentIndex + MapBREITE]) == 0 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten, links und rechts nicht möglich
             {
                 moveUp();
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten und oben nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 1 && (blockedIndex[currentIndex + MapBREITE]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 0) //Bewegung nach unten und oben nicht möglich
             {
                 randomStorage = Random.Range(0, 2);
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
@@ -474,7 +477,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten, oben und rechts nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 1 && (blockedIndex[currentIndex + MapBREITE]) == 1 && (blockedIndex[currentIndex - 1]) == 0 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung nach unten, oben und rechts nicht möglich
             {
                 if (currentIndex % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
                 {
@@ -485,7 +488,7 @@ public class GenerateMap : MonoBehaviour
                     moveLeft();
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) // Bewegung nach unten, oben und links nicht möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 1 && (blockedIndex[currentIndex + MapBREITE]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 0) // Bewegung nach unten, oben und links nicht möglich
             {
                 if ((currentIndex + 1) % MapBREITE == 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
                 {
@@ -496,7 +499,7 @@ public class GenerateMap : MonoBehaviour
                     moveRight();
                 }
             }
-            else if ((blockedIndex[currentIndex - MapHoehe]) == 1 && (blockedIndex[currentIndex + MapHoehe]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung in keine Richtung möglich
+            else if ((blockedIndex[currentIndex - MapBREITE]) == 1 && (blockedIndex[currentIndex + MapBREITE]) == 1 && (blockedIndex[currentIndex - 1]) == 1 && (blockedIndex[currentIndex + 1]) == 1) //Bewegung in keine Richtung möglich
             {
                 finishedMapGen = true;
             }
@@ -523,16 +526,16 @@ public class GenerateMap : MonoBehaviour
 
     private void moveDown()
     {
-        nextIndex = currentIndex - MapHoehe;
+        nextIndex = currentIndex - MapBREITE;
         int currentPos = blockedIndex[currentIndex];
         int topPos = 0;
         int leftPos = 0;
         int rightPos = 0;
         blockedIndex[currentIndex] = 1;
-        if (currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
+        if (currentIndex + MapBREITE < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
         {
-            topPos = blockedIndex[currentIndex + MapHoehe];
-            blockedIndex[currentIndex + MapHoehe] = 1;
+            topPos = blockedIndex[currentIndex + MapBREITE];
+            blockedIndex[currentIndex + MapBREITE] = 1;
         }
         if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
         {
@@ -550,7 +553,7 @@ public class GenerateMap : MonoBehaviour
         int rightLeftCounter = 0;
         while (schleifeAktiv == true)
         {
-            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE) // (moveDown)
             {
                 if (blockedIndex[i] == 0)
                 {
@@ -570,7 +573,7 @@ public class GenerateMap : MonoBehaviour
                     moved = true;
                 }
             }
-            if (schleifeCurrentIndex % MapBREITE != 0)
+            if (schleifeCurrentIndex % MapBREITE != 0) // wird ausgeführt, falls Position nicht am linken Rand liegt (moveLeft)
             {
                 for (int i = schleifeCurrentIndex - 1; i > -1; i = i - 1)
                 {
@@ -585,7 +588,7 @@ public class GenerateMap : MonoBehaviour
                         failCounter++;
                         i = -1;
                     }
-                    if (schleifeCurrentIndex % MapBREITE == 0)
+                    if (schleifeCurrentIndex % MapBREITE == 0) // Stopp, da Position am linken Rand liegt
                     {
                         i = -1;
                     }
@@ -598,7 +601,7 @@ public class GenerateMap : MonoBehaviour
                     }
                 }
             }
-            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE)
+            for (int i = schleifeCurrentIndex - MapBREITE; i > -1; i = i - MapBREITE) // (moveDown)
             {
                 if (blockedIndex[i] == 0)
                 {
@@ -618,7 +621,7 @@ public class GenerateMap : MonoBehaviour
                     moved = true;
                 }
             }
-            if ((schleifeCurrentIndex + 1) % MapBREITE != 0)
+            if ((schleifeCurrentIndex + 1) % MapBREITE != 0) // wird ausgeführt, falls Position nicht am rechten Rand liegt (moveRight)
             {
                 for (int i = schleifeCurrentIndex + 1; i < MapBREITE * MapHoehe - 1; i++)
                 {
@@ -633,7 +636,7 @@ public class GenerateMap : MonoBehaviour
                         failCounter++;
                         i = MapBREITE * MapHoehe;
                     }
-                    if ((schleifeCurrentIndex + 1) % MapBREITE == 0)
+                    if ((schleifeCurrentIndex + 1) % MapBREITE == 0) // Stopp, da Position am rechten Rand liegt
                     {
                         i = MapBREITE * MapHoehe;
                     }
@@ -649,9 +652,9 @@ public class GenerateMap : MonoBehaviour
             {
                 schleifeAktiv = false;
                 blockedIndex[currentIndex] = currentPos;
-                if (currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
+                if (currentIndex + MapBREITE < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
                 {
-                    blockedIndex[currentIndex + MapHoehe] = topPos;
+                    blockedIndex[currentIndex + MapBREITE] = topPos;
                 }
                 if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
                 {
@@ -667,9 +670,9 @@ public class GenerateMap : MonoBehaviour
             {
                 schleifeAktiv = false;
                 blockedIndex[currentIndex] = currentPos;
-                if (currentIndex + MapHoehe < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
+                if (currentIndex + MapBREITE < MapHoehe * MapBREITE) // Überprüfung darauf, ob aktuelle Position am oberen Rand liegt
                 {
-                    blockedIndex[currentIndex + MapHoehe] = topPos;
+                    blockedIndex[currentIndex + MapBREITE] = topPos;
                 }
                 if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
                 {
@@ -691,13 +694,13 @@ public class GenerateMap : MonoBehaviour
 
     private void moveUp()
     {
-        nextIndex = currentIndex + MapHoehe;
+        nextIndex = currentIndex + MapBREITE;
         int currentPos = blockedIndex[currentIndex];
-        int botPos = blockedIndex[currentIndex - MapHoehe];
+        int botPos = blockedIndex[currentIndex - MapBREITE];
         int leftPos = 0;
         int rightPos = 0;
         blockedIndex[currentIndex] = 1;
-        blockedIndex[currentIndex - MapHoehe] = 1;
+        blockedIndex[currentIndex - MapBREITE] = 1;
         if (currentIndex % MapBREITE != 0)
         {
             leftPos = blockedIndex[currentIndex - 1];
@@ -813,7 +816,7 @@ public class GenerateMap : MonoBehaviour
             {
                 schleifeAktiv = false;
                 blockedIndex[currentIndex] = currentPos;
-                blockedIndex[currentIndex - MapHoehe] = botPos;
+                blockedIndex[currentIndex - MapBREITE] = botPos;
                 if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
                 {
                     blockedIndex[currentIndex - 1] = leftPos;
@@ -828,7 +831,7 @@ public class GenerateMap : MonoBehaviour
             {
                 schleifeAktiv = false;
                 blockedIndex[currentIndex] = currentPos;
-                blockedIndex[currentIndex - MapHoehe] = botPos;
+                blockedIndex[currentIndex - MapBREITE] = botPos;
                 if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
                 {
                     blockedIndex[currentIndex - 1] = leftPos;
@@ -851,12 +854,12 @@ public class GenerateMap : MonoBehaviour
     {
         nextIndex = currentIndex - 1;
         int currentPos = blockedIndex[currentIndex];
-        int topPos = blockedIndex[currentIndex + MapHoehe];
-        int botPos = blockedIndex[currentIndex - MapHoehe];
+        int topPos = blockedIndex[currentIndex + MapBREITE];
+        int botPos = blockedIndex[currentIndex - MapBREITE];
         int rightPos = 0;
         blockedIndex[currentIndex] = 1;
-        blockedIndex[currentIndex + MapHoehe] = 1;
-        blockedIndex[currentIndex - MapHoehe] = 1;
+        blockedIndex[currentIndex + MapBREITE] = 1;
+        blockedIndex[currentIndex - MapBREITE] = 1;
         if ((currentIndex + 1) % MapBREITE != 0)
         {
             rightPos = blockedIndex[currentIndex + 1];
@@ -967,8 +970,8 @@ public class GenerateMap : MonoBehaviour
             {
                 schleifeAktiv = false;
                 blockedIndex[currentIndex] = currentPos;
-                blockedIndex[currentIndex + MapHoehe] = topPos;
-                blockedIndex[currentIndex - MapHoehe] = botPos;
+                blockedIndex[currentIndex + MapBREITE] = topPos;
+                blockedIndex[currentIndex - MapBREITE] = botPos;
                 if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
                 {
                     blockedIndex[currentIndex + 1] = rightPos;
@@ -979,8 +982,8 @@ public class GenerateMap : MonoBehaviour
             {
                 schleifeAktiv = false;
                 blockedIndex[currentIndex] = currentPos;
-                blockedIndex[currentIndex + MapHoehe] = topPos;
-                blockedIndex[currentIndex - MapHoehe] = botPos;
+                blockedIndex[currentIndex + MapBREITE] = topPos;
+                blockedIndex[currentIndex - MapBREITE] = botPos;
                 if ((currentIndex + 1) % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am rechten Rand liegt
                 {
                     blockedIndex[currentIndex + 1] = rightPos;
@@ -998,12 +1001,12 @@ public class GenerateMap : MonoBehaviour
     {
         nextIndex = currentIndex + 1;
         int currentPos = blockedIndex[currentIndex];
-        int topPos = blockedIndex[currentIndex + MapHoehe];
-        int botPos = blockedIndex[currentIndex - MapHoehe];
+        int topPos = blockedIndex[currentIndex + MapBREITE];
+        int botPos = blockedIndex[currentIndex - MapBREITE];
         int leftPos = 0;
         blockedIndex[currentIndex] = 1;
-        blockedIndex[currentIndex + MapHoehe] = 1;
-        blockedIndex[currentIndex - MapHoehe] = 1;
+        blockedIndex[currentIndex + MapBREITE] = 1;
+        blockedIndex[currentIndex - MapBREITE] = 1;
         if (currentIndex % MapBREITE != 0)
         {
             leftPos = blockedIndex[currentIndex + 1];
@@ -1114,8 +1117,8 @@ public class GenerateMap : MonoBehaviour
             {
                 schleifeAktiv = false;
                 blockedIndex[currentIndex] = currentPos;
-                blockedIndex[currentIndex + MapHoehe] = topPos;
-                blockedIndex[currentIndex - MapHoehe] = botPos;
+                blockedIndex[currentIndex + MapBREITE] = topPos;
+                blockedIndex[currentIndex - MapBREITE] = botPos;
                 if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
                 {
                     blockedIndex[currentIndex - 1] = leftPos;
@@ -1126,8 +1129,8 @@ public class GenerateMap : MonoBehaviour
             {
                 schleifeAktiv = false;
                 blockedIndex[currentIndex] = currentPos;
-                blockedIndex[currentIndex + MapHoehe] = topPos;
-                blockedIndex[currentIndex - MapHoehe] = botPos;
+                blockedIndex[currentIndex + MapBREITE] = topPos;
+                blockedIndex[currentIndex - MapBREITE] = botPos;
                 if (currentIndex % MapBREITE != 0) // Überprüfung darauf, ob aktuelle Position am linken Rand liegt
                 {
                     blockedIndex[currentIndex - 1] = leftPos;
