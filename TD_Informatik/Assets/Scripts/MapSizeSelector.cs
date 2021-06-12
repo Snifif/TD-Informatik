@@ -27,6 +27,10 @@ public class MapSizeSelector : MonoBehaviour
         }
         
     }
+    public void buttonBackPressedScript()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
     public void mapHeightChanged(string mapHeightString)
     {
         Debug.Log("mapHeight: " + mapHeightString);

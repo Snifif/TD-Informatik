@@ -32,6 +32,10 @@ public class GenerateMap : MonoBehaviour
 
     [SerializeField] private int lengthCounterPath;
 
+    public static bool cameraAligned = true;
+    public static Vector3 cameraPosition = new Vector3(0, 0, 0);
+    public static Vector3 cameraRotation = new Vector3(0, 0, 0);
+
     private void Start()
     {
         MapNodes.Clear();
@@ -60,10 +64,31 @@ public class GenerateMap : MonoBehaviour
         return edgeTiles;
     }
 
+    private void alignCamera()
+    {
+        float cameraX = (MapBREITE - 1);
+        float cameraY = (MapHoehe * 1.6F);
+        if(MapBREITE > MapHoehe)
+        {
+            cameraY = (MapBREITE * 1.6F);
+        }
+        
+        float cameraZ = (cameraY / 5.5F) * (-1);
+        if(MapBREITE > MapHoehe)
+        {
+            cameraZ = (cameraY / 5.5F) * (-1) - (0.5F * (MapBREITE - MapHoehe));
+        }
 
+        cameraPosition = new Vector3(cameraX, cameraY, cameraZ);
+        cameraRotation = new Vector3(60, 0, 0);
+        cameraAligned = false;
+    }
 
     private void MapGenerate()
     {
+        MapBREITE = MapSizeSelector.mapWidth;
+        MapHoehe = MapSizeSelector.mapHeight;
+        alignCamera();
         for (int z = 0; z < 2 * MapHoehe; z = z + 2)
         {
             for (int x = 0; x < 2 * MapBREITE; x = x + 2)

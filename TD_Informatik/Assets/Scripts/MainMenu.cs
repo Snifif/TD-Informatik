@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartPressedScript()
     {
-        SceneManager.LoadScene("SampleScene");     // Ladet SampleScene 
+        SceneManager.LoadScene("SelectMapSize");     // Ladet SampleScene 
     }
 
     public void QuitScript()

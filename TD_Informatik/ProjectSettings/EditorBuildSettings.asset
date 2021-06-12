@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Overscreen.unity
     guid: 424efc5af6ce9254ea7e6670881b8ae4
+  - enabled: 1
+    path: Assets/Scenes/SelectMapSize.unity
+    guid: 078665c6a0180de4fa56702c98ed1011
   m_configObjects: {}
