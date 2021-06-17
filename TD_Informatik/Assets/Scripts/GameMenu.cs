@@ -9,7 +9,7 @@ public class GameMenu : MonoBehaviour
     public static bool TT = false;
     public static bool LT = false;
     bool Paused = false;
-
+    
     public void TurretT()
     {
        TT = true;
@@ -38,6 +38,8 @@ public class GameMenu : MonoBehaviour
 
     public void MAINMENU()
     {
+        Time.timeScale = 1;
+        Paused = false;
         SceneManager.LoadScene("MainMenu");
     }
 }
