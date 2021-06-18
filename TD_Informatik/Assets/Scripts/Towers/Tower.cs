@@ -5,7 +5,6 @@ using UnityEngine;
 public class Tower : MonoBehaviour
 {
     [SerializeField] private float range;
-    [SerializeField] private float damage;
     [SerializeField] private float attackSpeed;
     [SerializeField] private int updateMode = 1;
     
@@ -13,6 +12,8 @@ public class Tower : MonoBehaviour
     public float turnspeed = 15f;
 
     private GameObject currentTarget;
+    public GameObject ammo;
+    public GameObject ammospawner;
 
     private void Start()
     {
@@ -82,8 +83,14 @@ public class Tower : MonoBehaviour
     
     private void shoot()
     {
-        EnemyBehavior2 enemyScript = currentTarget.GetComponent<EnemyBehavior2>();
-        enemyScript.takeDamage(damage);
+
+        GameObject NewAmmo = (GameObject)Instantiate(ammo, ammospawner.transform.position, this.transform.rotation);
+        AmmoBehaviour AMMO = NewAmmo.GetComponent<AmmoBehaviour>();
+
+        if (AMMO != null)
+        {
+            AMMO.ConfirmEnemy(currentTarget.transform);
+        }
     }
 
     private void OnMouseDown()   // wenn drauf ge clickt wird updatemode ändern

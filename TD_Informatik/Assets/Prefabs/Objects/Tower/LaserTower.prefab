@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2342388437127423358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3474571955050079417}
+  m_Layer: 0
+  m_Name: AmmoSpawnpoint2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3474571955050079417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2342388437127423358}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 17.98109, y: 16.931, z: 3.9860525}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6004015902999607322}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6004015902332555129
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +707,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6004015902999607323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.47, y: 6.39, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6004015903170737217}
@@ -694,6 +724,7 @@ Transform:
   - {fileID: 6004015903888883123}
   - {fileID: 6004015902407367393}
   - {fileID: 6004015902940641554}
+  - {fileID: 3474571955050079417}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -749,10 +780,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 10
-  damage: 15
-  attackSpeed: 3
+  attackSpeed: 5
   updateMode: 1
   turnspeed: 5
+  ammo: {fileID: 5059559959985800595, guid: 8e217de784edddb4090f79aed1f7edc6, type: 3}
+  ammospawner: {fileID: 2342388437127423358}
 --- !u!1 &6004015903121637805
 GameObject:
   m_ObjectHideFlags: 0
