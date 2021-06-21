@@ -8,7 +8,6 @@ public class NodeScript : MonoBehaviour
     public GameObject TurretTower;
     bool towerPlaced = false; // eventuell unnötig
     private GameObject ConnectedTurret;
-
     private void Start()
     {
         towerPlaced = false;
