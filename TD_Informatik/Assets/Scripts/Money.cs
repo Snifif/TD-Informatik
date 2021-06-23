@@ -22,8 +22,8 @@ public class Money : MonoBehaviour
 
         for (deathcount = EnemyBehavior2.deathtrack; deathcount > 0; deathcount--)    
         {
-            money += 5;   // Bei töten von Gegner Geld und Punkte hinzufügen
-            Points.points += 5;
+            money += 2;   // Bei töten von Gegner Geld und Punkte hinzufügen
+            Points.points += 2;
         }
         EnemyBehavior2.deathtrack = 0;
         UpdateBalance();

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1829089145241900043}
   - component: {fileID: 3778471003537397235}
   m_Layer: 0
-  m_Name: Enemy2
+  m_Name: Enemy2 (old)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   damage: 5
-  speed: 0.5
   killReward: 50
   targetPos: {x: 0, y: 0, z: 0}
   EndNodePos: {x: 0, y: 0, z: 0}
+  indexOfTargetNode: 0
