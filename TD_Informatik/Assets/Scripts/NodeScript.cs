@@ -6,6 +6,8 @@ public class NodeScript : MonoBehaviour
 {
     public GameObject LaserTower;
     public GameObject TurretTower;
+    public GameObject Yeeter;
+
     bool towerPlaced = false; // eventuell unnötig
     private GameObject ConnectedTurret;
     private void Start()
@@ -34,7 +36,15 @@ public class NodeScript : MonoBehaviour
                 Money.money = Money.money - 20;
                 towerPlaced = true;
             }
+
+            if (GameMenu.YT == true && Money.money >= 200)
+            {
+                ConnectedTurret = Instantiate(Yeeter, new Vector3(gameObject.transform.position.x, 0.8f, gameObject.transform.position.z), Quaternion.identity);
+                Money.money = Money.money - 200;
+                towerPlaced = true;
+            }
             Money.UpdateBalance();
+
             
         }
     }

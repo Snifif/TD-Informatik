@@ -7,7 +7,7 @@ public class AmmoBehaviour : MonoBehaviour
 
     [SerializeField] private float damage;
     public GameObject Bloodeffect;
-
+    public GameObject GutsEffect;
     private Transform target;
     public float speed;
 
@@ -29,9 +29,15 @@ public class AmmoBehaviour : MonoBehaviour
         
         if (direction.magnitude <= currentdistancemoved)
         {
+            //if (damage >= 20 && target != null)
+            //{
+            //    GameObject Guts = (GameObject)Instantiate(GutsEffect, gameObject.transform.position, transform.rotation);
+            //    Destroy(Guts, 2f);
+            //}
+            
             GameObject Blood = (GameObject)Instantiate(Bloodeffect, gameObject.transform.position, transform.rotation);
             Destroy(Blood, 1.5f);
-            
+                   
             EnemyBehavior2 enemyScript = target.GetComponent<EnemyBehavior2>();
             enemyScript.takeDamage(damage);
 

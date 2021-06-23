@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5237655978635220728}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -106,7 +106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec59aa07e9cd16f4e84d0818766d0f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 15
+  damage: 12
   Bloodeffect: {fileID: 1058832579382287705, guid: 3609462234927c54b9f1d47e6a3690cf,
+    type: 3}
+  GutsEffect: {fileID: 2885423943967995524, guid: b30299e59c5c71e4db324bf43b468d23,
     type: 3}
   speed: 10
