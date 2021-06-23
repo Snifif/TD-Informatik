@@ -11,7 +11,9 @@ public class EnemyWaveSpawner : MonoBehaviour
 
     int WaveCount = 1;
     int EnemySpawnAmount = 5;
+    int Enemy2SpawnAmount = 1;
     int EnemiesSpawned;
+    int Enemies2Spawned;
 
     float WaveTimer = 2f;
     float TimeWaited;
@@ -40,10 +42,17 @@ public class EnemyWaveSpawner : MonoBehaviour
                 EnemiesSpawned++;
                 if (EnemiesSpawned == EnemySpawnAmount)  // wenn alle gespawnt sind das untere machen
                 {
-                    checkwave = false;
-                    EnemiesSpawned = 0;
-                    EnemySpawnAmount += 5;
-                    WaveTimer -= 0.2f * WaveTimer;
+                    //Instantiate(Enemy2, new Vector3(GenerateMap.startTile.transform.position.x, 1, GenerateMap.startTile.transform.position.z), Quaternion.identity);
+                    Enemies2Spawned++;
+                    if (Enemies2Spawned == Enemy2SpawnAmount)
+                    {
+                        checkwave = false;
+                        EnemiesSpawned = 0;
+                        EnemySpawnAmount += 5;
+                        Enemy2SpawnAmount += 1;
+                        WaveTimer -= 0.2f * WaveTimer;
+                    }
+                    
                 }
             }
             TimeWaited += Time.deltaTime;
