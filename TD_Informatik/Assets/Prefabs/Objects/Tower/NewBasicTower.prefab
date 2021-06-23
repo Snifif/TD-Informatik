@@ -233,7 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 5
-  attackSpeed: 0.3
+  attackSpeed: 0.4
   updateMode: 1
   turnspeed: 15
   ammo: {fileID: 5059559959985800595, guid: 8e217de784edddb4090f79aed1f7edc6, type: 3}
