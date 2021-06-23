@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:TD_Informatik/Assets/Sprites/Materials.meta
 guid: 3d42593fb0dcc9741b85c45bf8600f64
+=======
+guid: 85e296b2b388c164b8eb63dd6f20a9a4
+>>>>>>> a829ca287ee080cbb19f810215893edca08ca3c0:TD_Informatik/Assets/Scripts/Testscripts.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
