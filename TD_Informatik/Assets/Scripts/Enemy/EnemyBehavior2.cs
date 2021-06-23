@@ -87,6 +87,7 @@ public class EnemyBehavior2 : MonoBehaviour
     {
         if (health <= 0f)
         {
+
             die();
 
         }
@@ -108,6 +109,7 @@ public class EnemyBehavior2 : MonoBehaviour
     private void die()
     {
         ListEnemies.enemies.Remove(gameObject);
+
         Destroy(transform.gameObject);
     }
 }

@@ -8,12 +8,14 @@ public class GameMenu : MonoBehaviour
 
     public static bool TT = false;
     public static bool LT = false;
+    public static bool YT = false;
     bool Paused = false;
     
     public void TurretT()
     {
        TT = true;
        LT = false;
+       YT = false;
     }
 
     public void LaserT()
@@ -21,6 +23,14 @@ public class GameMenu : MonoBehaviour
 
        TT = false;
        LT = true;
+       YT = false;
+    }
+
+    public void Yeeter()
+    {
+       TT = false;
+       LT = false;
+       YT = true;
     }
     public void Pause()
     { 
