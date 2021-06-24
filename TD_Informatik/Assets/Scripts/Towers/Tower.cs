@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    [SerializeField] private float range;
-    [SerializeField] private float attackSpeed;
+    [SerializeField] public float range;
+    [SerializeField] public float attackSpeed;
+    public float baseRange;
+    public float baseAttackSpeed;
     [SerializeField] private int updateMode = 1;
     
     private float nextAttackTime;
@@ -15,10 +17,24 @@ public class Tower : MonoBehaviour
     public GameObject ammo;
     public GameObject ammospawner;
 
+    public float damageMultiplier = 1;
+    public float attackSpeedMultiplier = 1;
+    public float rangeMultiplier = 1;
+
+    public bool multipliersCorrect = true;
+
+    public string turretType;
+    public int turretPrice;
+    public int turretValue;
+
+    private void Awake()
+    {
+        baseRange = range;
+        baseAttackSpeed = attackSpeed;
+    }
     private void Start()
     {
         nextAttackTime = Time.time;
-
     }
 
     private void updateClosestEnemy() // wird ausgeführt werden, wenn Türme so eingestellt sind, dass sie den nächsten Gegner angreifen sollen (sucht nach dem Gegner mit der geringsten Entfernung zum Turm
@@ -89,7 +105,7 @@ public class Tower : MonoBehaviour
 
         if (AMMO != null)
         {
-            AMMO.ConfirmEnemy(currentTarget.transform);
+            AMMO.ConfirmEnemy(currentTarget.transform, damageMultiplier);
         }
     }
 
@@ -97,6 +113,32 @@ public class Tower : MonoBehaviour
     {
         ButtonTowerInfo.buttonUpdated = false;
         ButtonTowerInfo.buttonInteractable = true;
+        ButtonTowerInfo.tower = this.gameObject;
+        ButtonTowerInfo.buttonText = turretType + " / " + turretPrice + " / " + damageMultiplier + " / " + attackSpeed + " / " + range;
+        ButtonDamage.buttonUpdated = false;
+        ButtonDamage.buttonInteractable = true;
+        ButtonDamage.tower = this.gameObject;
+        ButtonDamage.buttonText = "Upgrade Damage to: " + (damageMultiplier + 1) + " $" + (turretPrice / 2* Mathf.Pow(2, damageMultiplier));
+        ButtonAttackSpeed.buttonUpdated = false;
+        ButtonAttackSpeed.buttonInteractable = true;
+        ButtonAttackSpeed.tower = this.gameObject;
+        ButtonAttackSpeed.buttonText = "Upgrade Attack Speed to: " + (baseAttackSpeed / (attackSpeedMultiplier + 1)) + " $" + (turretPrice / 2 * Mathf.Pow(2, attackSpeedMultiplier));
+        ButtonAttackRange.buttonUpdated = false;
+        ButtonAttackRange.buttonInteractable = true;
+        ButtonAttackRange.tower = this.gameObject;
+        ButtonAttackRange.buttonText = "Upgrade Attack Range to: " + (baseRange * (rangeMultiplier + 1)) + " $" + (turretPrice / 2 *Mathf.Pow(2, rangeMultiplier));
+        ButtonSell.buttonUpdated = false;
+        ButtonSell.buttonInteractable = true;
+        ButtonSell.tower = this.gameObject;
+        ButtonSell.buttonText = "Sell for: " + (turretValue / 2);
+        ButtonClose.buttonUpdated = false;
+        ButtonClose.buttonInteractable = true;
+        ButtonClose.buttonText = "Close";
+    }
+
+    public void MouseClick()
+    {
+        OnMouseDown();
     }
 
     private void RotateToEnemy()

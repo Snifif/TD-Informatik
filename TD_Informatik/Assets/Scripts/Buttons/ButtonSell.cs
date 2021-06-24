@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class ButtonDamage : MonoBehaviour
+public class ButtonSell : MonoBehaviour
 {
     Button button;
     private Text text;
@@ -31,14 +32,26 @@ public class ButtonDamage : MonoBehaviour
     public void buttonClick()
     {
         TowerBasic towerScript = tower.GetComponent<TowerBasic>();
-        int upgradePrice = towerScript.turretPrice / 2 * (int) Mathf.Pow(2, towerScript.damageMultiplier);
-        if (Money.money >= upgradePrice)
-        {
-            towerScript.damageMultiplier++;
-            Money.money = Money.money - upgradePrice;
-            towerScript.turretValue = towerScript.turretValue + upgradePrice;
-        }
-        towerScript.MouseClick();
+        Money.money = Money.money + (towerScript.turretValue)/2;
+        Destroy(tower.transform.gameObject);
+        buttonInteractable = false;
+        buttonUpdated = false;
+        ButtonTowerInfo.buttonUpdated = false;
+        ButtonTowerInfo.buttonInteractable = false;
+        ButtonDamage.buttonUpdated = false;
+        ButtonDamage.buttonInteractable = false;
+        ButtonAttackSpeed.buttonUpdated = false;
+        ButtonAttackSpeed.buttonInteractable = false;
+        ButtonAttackRange.buttonUpdated = false;
+        ButtonAttackRange.buttonInteractable = false;
+        ButtonClose.buttonUpdated = false;
+        ButtonClose.buttonInteractable = false;
+        buttonText = "";
+        ButtonTowerInfo.buttonText = "";
+        ButtonDamage.buttonText = "";
+        ButtonAttackSpeed.buttonText = "";
+        ButtonAttackRange.buttonText = "";
+        ButtonClose.buttonText = "";
     }
     void Update()
     {
@@ -46,5 +59,6 @@ public class ButtonDamage : MonoBehaviour
         {
             updateButton();
         }
+        
     }
 }

@@ -10,10 +10,12 @@ public class AmmoBehaviour : MonoBehaviour
     public GameObject GutsEffect;
     private Transform target;
     public float speed;
+    private float damageMultiplier;
 
-    public void ConfirmEnemy (Transform _target)
+    public void ConfirmEnemy (Transform _target, float dmgMultiplier)
     {
         target = _target;
+        damageMultiplier = dmgMultiplier;
     }
     
     void Update()
@@ -39,7 +41,7 @@ public class AmmoBehaviour : MonoBehaviour
             Destroy(Blood, 1.5f);
                    
             EnemyBehavior2 enemyScript = target.GetComponent<EnemyBehavior2>();
-            enemyScript.takeDamage(damage);
+            enemyScript.takeDamage(damage*damageMultiplier);
 
             Destroy(gameObject);
         }
