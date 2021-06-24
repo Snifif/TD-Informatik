@@ -995,9 +995,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c4949ac4c856fc438d8fe8359560f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonUpdated: 1
-  buttonInteractable: 0
-  buttonText: 
 --- !u!1 &887424844
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,13 +1021,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887424844}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
   m_LocalPosition: {x: 0, y: 0, z: 2.7402363}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 146019119}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.000091552734}
@@ -1089,8 +1086,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1007c714cf48ef84fb92ead2489aa1aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy1: {fileID: 1523586904089059802, guid: 1660f646448b3da468b88c06291f29f4, type: 3}
-  Enemy2: {fileID: 0}
+  Enemy1: {fileID: 6821103516260505019, guid: e6ddd77e8e3b7854f9a68dad39f1cf73, type: 3}
+  Enemy2: {fileID: 761312184349329758, guid: b2afbdfd082ce0146a829597a29f81ea, type: 3}
   checkwave: 1
 --- !u!1001 &900492244
 PrefabInstance:
@@ -1781,9 +1778,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8ed9d9c80e63c04fa60b4910e745431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonUpdated: 1
-  buttonInteractable: 0
-  buttonText: 
 --- !u!1 &1164592591
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,9 +2293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cae6a98159f324749aba9c13ce7920be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonUpdated: 1
-  buttonInteractable: 0
-  buttonText: 
 --- !u!1 &1389636467
 GameObject:
   m_ObjectHideFlags: 0
@@ -2845,9 +2836,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a370dba34ade734b828fc4d1045da4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonUpdated: 1
-  buttonInteractable: 0
-  buttonText: 
 --- !u!1 &1617983583
 GameObject:
   m_ObjectHideFlags: 0
@@ -3359,6 +3347,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ddc3500b3e47e346892b19e9514408a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonUpdated: 1
-  buttonInteractable: 0
-  buttonText: 

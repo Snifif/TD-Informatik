@@ -43,6 +43,7 @@ public class EnemyBehavior2 : MonoBehaviour
     {
         TargetNode = GenerateMap.startTile;
         indexOfTargetNode = GenerateMap.PathNodes.IndexOf(TargetNode);
+        transform.Rotate(30.0f, 0.0f, 0.0f, Space.Self);
     }
 
     private void MoveEnemy()
@@ -50,8 +51,6 @@ public class EnemyBehavior2 : MonoBehaviour
 
         targetPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z); // nur in x und z Richtung zum TargetNode bewegen
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-
-
     }
 
     public void CheckTargetNode() // chekt distanz und wechselt ziel wenn in distnaz zu klein ist
