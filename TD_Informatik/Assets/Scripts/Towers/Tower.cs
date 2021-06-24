@@ -95,7 +95,8 @@ public class Tower : MonoBehaviour
 
     private void OnMouseDown()   // wenn drauf ge clickt wird updatemode ändern
     {
-
+        ButtonTowerInfo.buttonUpdated = false;
+        ButtonTowerInfo.buttonInteractable = true;
     }
 
     private void RotateToEnemy()
@@ -114,6 +115,7 @@ public class Tower : MonoBehaviour
     {
         turnspeed = 15f;
     }
+
 
     private void Update()
     {
