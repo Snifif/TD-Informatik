@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.Audio;
 using UnityEngine;
 
 public class AmmoBehaviour : MonoBehaviour
@@ -8,6 +7,8 @@ public class AmmoBehaviour : MonoBehaviour
     [SerializeField] private float damage;
     public GameObject Bloodeffect;
     public GameObject GutsEffect;
+
+
     private Transform target;
     public float speed;
     private float damageMultiplier;
@@ -50,4 +51,6 @@ public class AmmoBehaviour : MonoBehaviour
         transform.Translate(direction.normalized * currentdistancemoved, Space.World);
 
     }
+
+
 }

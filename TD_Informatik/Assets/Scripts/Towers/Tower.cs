@@ -27,6 +27,8 @@ public class Tower : MonoBehaviour
     public int turretPrice;
     public int turretValue;
 
+    private AudioSource shootsfx;
+
     private void Awake()
     {
         baseRange = range;
@@ -99,6 +101,9 @@ public class Tower : MonoBehaviour
     
     private void shoot()
     {
+        shootsfx = GetComponent<AudioSource>();
+        shootsfx.volume = 0.5f;
+        shootsfx.PlayOneShot(shootsfx.clip);
 
         GameObject NewAmmo = (GameObject)Instantiate(ammo, ammospawner.transform.position, this.transform.rotation);
         AmmoBehaviour AMMO = NewAmmo.GetComponent<AmmoBehaviour>();
