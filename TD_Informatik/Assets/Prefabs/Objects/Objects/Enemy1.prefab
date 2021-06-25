@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5877bb30b52df3439ce970d0fbb1f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
+  health: 15
   damage: 1
   killReward: 5
   targetPos: {x: 0, y: 0, z: 0}

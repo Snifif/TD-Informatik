@@ -3,7 +3,11 @@ guid: d5e1ba2aaff6c794d9c7b57b2c4d2536
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - LaserTower: {fileID: 6004015902999607323, guid: 766c9ee9d2ae48c428b29a4871bc662b,
+      type: 3}
+  - TurretTower: {instanceID: 0}
+  - Yeeter: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

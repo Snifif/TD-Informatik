@@ -49,7 +49,7 @@ public class EnemyBehavior2 : MonoBehaviour
     private void MoveEnemy()
     {
 
-        targetPos = new Vector3(TargetNode.transform.position.x, 1f, TargetNode.transform.position.z); // nur in x und z Richtung zum TargetNode bewegen
+        targetPos = new Vector3(TargetNode.transform.position.x, 1.5f, TargetNode.transform.position.z); // nur in x und z Richtung zum TargetNode bewegen
         transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
     }
 

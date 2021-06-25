@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +11,7 @@ public class EnemyWaveSpawner : MonoBehaviour
 
     int WaveCount = 1;
     int EnemySpawnAmount = 5;
-    int Enemy2SpawnAmount = 1;
+    int Enemy2SpawnAmount = 0;
     int EnemiesSpawned;
     int Enemies2Spawned;
 
@@ -25,7 +25,7 @@ public class EnemyWaveSpawner : MonoBehaviour
 
     void Update()
     {
-        Wavee = GetComponent<Text>(); 
+        Wavee = GetComponent<Text>();
         Wave();
         CheckEnemies();
     }
@@ -37,22 +37,28 @@ public class EnemyWaveSpawner : MonoBehaviour
 
             if (WaveTimer <= TimeWaited)
             {
-                TimeWaited = 0;
-                Instantiate(Enemy1, new Vector3(GenerateMap.startTile.transform.position.x, 1, GenerateMap.startTile.transform.position.z), Quaternion.identity);
-                EnemiesSpawned++;
-                if (EnemiesSpawned == EnemySpawnAmount)  // wenn alle gespawnt sind das untere machen
+                if (EnemiesSpawned != EnemySpawnAmount)
                 {
-                    //Instantiate(Enemy2, new Vector3(GenerateMap.startTile.transform.position.x, 1, GenerateMap.startTile.transform.position.z), Quaternion.identity);
-                    Enemies2Spawned++;
+                    TimeWaited = 0;
+                    Instantiate(Enemy1, new Vector3(GenerateMap.startTile.transform.position.x, 1, GenerateMap.startTile.transform.position.z), Quaternion.identity);
+                    EnemiesSpawned++;
+                }
+                else
+                {
                     if (Enemies2Spawned == Enemy2SpawnAmount)
                     {
                         checkwave = false;
                         EnemiesSpawned = 0;
+                        Enemies2Spawned = 0;
                         EnemySpawnAmount += 5;
                         Enemy2SpawnAmount += 1;
                         WaveTimer -= 0.2f * WaveTimer;
                     }
-                    
+                    else
+                    {
+                        Instantiate(Enemy2, new Vector3(GenerateMap.startTile.transform.position.x, 1, GenerateMap.startTile.transform.position.z), Quaternion.identity);
+                        Enemies2Spawned++;
+                    }
                 }
             }
             TimeWaited += Time.deltaTime;
@@ -73,3 +79,4 @@ public class EnemyWaveSpawner : MonoBehaviour
         }
     }
 }
+
